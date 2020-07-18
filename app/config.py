@@ -3,12 +3,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     DEBUG = False
+    TESTING = False
     CSRF_ENABLED = False
     # SECRET = 'this-really-needs-to-be-changed'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
+    DEVELOPMENT = True
     DEBUG = True
     BUNDLE_ERRORS = True
 
@@ -24,8 +26,8 @@ class ProductionConfig(Config):
     TESTING = False
 
 
-app_config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-}
+# app_config = {
+#     'development': DevelopmentConfig,
+#     'testing': TestingConfig,
+#     'production': ProductionConfig,
+# }
