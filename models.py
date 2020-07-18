@@ -9,10 +9,8 @@ class Item(db.Model):
     price = db.Column(db.Float())
     donor = db.Column(db.String())
     status = db.Column(db.String())
-    # image = db.Column(db.String())
-    # charity = db.Column(db.String())
 
-    def __init__(self, title, description, price, donor, status)
+    def __init__(self, title, description, price, donor, status):
         self.title = title
         self.description = description
         self.price = price
@@ -22,7 +20,7 @@ class Item(db.Model):
     def __repr__(self):
         return '<id {}>'.format(self.id)
 
-    def serialize(serf):
+    def serialize(self):
         return {
             'id': self.id,
             'title': self.title,
