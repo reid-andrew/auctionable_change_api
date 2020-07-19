@@ -9,19 +9,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from app.models.item import Item
+from app.controllers.items import ItemRoutes
 
 @app.route("/")
 def hello():
     return "Hello World!"
-
-
-@app.route("/items")
-def get_items():
-    try:
-        items=Item.query.all()
-        return jsonify([e.serialize() for e in items])
-    except Exception as e:
-        return(str(e))
 
 if __name__ == '__main__':
     app.run()
