@@ -1,7 +1,7 @@
 alembic==1.4.2
 aniso8601==8.0.0
 appdirs==1.4.4
--e git+git@github.com:Auctionable-Change/auctionable_change_api.git@a7aab6c2e692010d21d75a18972b725f73da1c62#egg=auctionable_change_api
+-e git+git@github.com:Auctionable-Change/auctionable_change_api.git
 click==7.1.2
 distlib==0.3.1
 filelock==3.0.12
