@@ -1,0 +1,26 @@
+alembic==1.4.2
+aniso8601==8.0.0
+appdirs==1.4.4
+-e git+git@github.com:Auctionable-Change/auctionable_change_api.git@a7aab6c2e692010d21d75a18972b725f73da1c62#egg=auctionable_change_api
+click==7.1.2
+distlib==0.3.1
+filelock==3.0.12
+Flask==1.1.2
+Flask-Migrate==2.5.3
+Flask-RESTful==0.3.8
+Flask-Script==2.0.6
+Flask-SQLAlchemy==2.4.4
+gunicorn==20.0.4
+itsdangerous==1.1.0
+Jinja2==2.11.2
+Mako==1.1.3
+MarkupSafe==1.1.1
+psycopg2-binary==2.8.5
+python-dateutil==2.8.1
+python-dotenv==0.14.0
+python-editor==1.0.4
+pytz==2020.1
+six==1.15.0
+SQLAlchemy==1.3.18
+virtualenv==20.0.27
+Werkzeug==1.0.1
