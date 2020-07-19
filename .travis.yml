@@ -1,10 +1,11 @@
 language: python
 python:
-  - "3.6"      # current default Python on Travis CI
-# command to install dependencies
+- '3.6'
 install:
-  - pip install -r requirements.txt
-
-# command to run tests
+- pip install -r requirements.txt
 script:
-  - pytest
+- pytest
+deploy:
+  provider: heroku
+  api_key:
+    secure: aaH3bNmuId1OU05ODhvGkiRRG8g2uQVlg4U+57UgS7HSXjv55D84h758f52U08YP4RgtooGzD5Hn15adnO/flRjIRbp+5xvudZ0klxwZDAZVVY212LhTeBrNj0tDUacEFPoLFLuBIXbLhC+jHBEoJr7e29i1PE3JaSQiHStOQsFjaGgy/qdyZYtMMzAerbtIY7a32rbzWAtAbJDiY9b5yjAWwFZyCR+tLMKGfwTBlMoD2MkpzwM8VUoJHNg9jXuDQNqcb4KhjzG2RIT32iyj/HbWE0N9R00YBNyKmQDxkeNz2LpJWduGygj8uFLanu4Q9upfnaQ8URZ1gvrA8GZ0fjkGwqyQuCY9YG+FLkiIrWk6NhBLM8+HPIYMhdGjsBCtdqhAKin5pmJZiMmBxWExng8tIgHuTdv5swfG3o1m3KlSaAlbetYQwDfQ7ecYfRmlzsRhxHMHLIOC9p4KDHvfdTuB8t0Dk4HlMUkXEGBw2dwB81QjCkdec9gMvNqT0Tjcz2KWmzk2hKAB3POod55Mpv7VDEmbXPMRe45KQJu6sjiepwAacpEA+LMjLYXuh659iNVAdwsZ/15Az665CCJaz7pHfdaoBtLVDgixeoAdiQim3a/Tk5LTZqVAYbdbyyr6vS823Z4ubBL4nArZW2Ehkab/KTgw9LKh4chIIXKq4+o=
