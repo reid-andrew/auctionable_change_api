@@ -83,8 +83,8 @@ item_post_parser.add_argument(
 class ItemResources(Resource):
     def get(self, item_id=None):
         if item_id:
-            items = Item.query.get(item_id)
-            return marshal(items, item_list_fields)
+            item = Item.query.filter_by(id=item_id).first()
+            return marshal(item, item_fields)
         else:
             items = Item.query.all()
             return marshal({
