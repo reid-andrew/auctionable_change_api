@@ -10,7 +10,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 api = Api(app)
-api.prefix = '/api'
 
 from app.models.item import Item
 from app.controllers.items import ItemResources
