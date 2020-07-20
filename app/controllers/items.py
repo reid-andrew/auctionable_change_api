@@ -23,6 +23,62 @@ item_list_fields = {
 }
 
 item_post_parser = reqparse.RequestParser()
+item_post_parser.add_argument(
+    'title',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'description',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'price',
+    type=float,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'donor',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'status',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'category',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'charity',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
+item_post_parser.add_argument(
+    'image',
+    type=str,
+    required=True,
+    location=['json'],
+    help='name parameter is required'
+)
 
 class ItemResources(Resource):
     def get(self, item_id=None):
@@ -39,7 +95,7 @@ class ItemResources(Resource):
     @marshal_with(item_fields)
     def post(self):
         args = item_post_parser.parse_args()
-        
+
         item = Item(**args)
         db.session.add(item)
         db.session.commit()
