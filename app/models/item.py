@@ -9,6 +9,9 @@ class Item(db.Model):
     price = db.Column(db.Float())
     donor = db.Column(db.String())
     status = db.Column(db.String())
+    category = db.Column(db.String())
+    charity = db.Column(db.String())
+    image = db.Column(db.String())
 
     def __init__(self, title, description, price, donor, status):
         self.title = title
@@ -16,6 +19,9 @@ class Item(db.Model):
         self.price = price
         self.donor = donor
         self.status = status
+        self.category = category
+        self.charity = charity
+        self.image = image
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
@@ -27,5 +33,8 @@ class Item(db.Model):
             'description': self.description,
             'price': self.price,
             'donor': self.donor,
-            'status': self.status
+            'status': self.status,
+            'category': self.category,
+            'charity': self.charity,
+            'image': self.image
         }
