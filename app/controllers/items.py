@@ -1,7 +1,6 @@
-from app import app, db
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from app.models.item import Item
+from app import app
+from flask import jsonify
+from app import Item
 
 class ItemRoutes:
     @app.route("/items")
