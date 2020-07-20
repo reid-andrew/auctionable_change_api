@@ -83,8 +83,8 @@ item_post_parser.add_argument(
 class ItemResources(Resource):
     def get(self, item_id=None):
         if item_id:
-            item = Item.query.filter_by(id=item_id).first()
-            return marshal(item, item_list_fields)
+            items = Item.query.get(item_id)
+            return marshal(items, item_list_fields)
         else:
             items = Item.query.all()
             return marshal({
@@ -98,6 +98,39 @@ class ItemResources(Resource):
 
         item = Item(**args)
         db.session.add(item)
+        db.session.commit()
+
+        return item
+
+    @marshal_with(item_fields)
+    def put(self, item_id=None):
+        item = Item.query.get(item_id)
+
+        if 'title' in request.json:
+            item.title = request.json['title']
+        if 'description' in request.json:
+            item.description = request.json['description']
+        if 'price' in request.json:
+            item.price = request.json['price']
+        if 'donor' in request.json:
+            item.donor = request.json['donor']
+        if 'status' in request.json:
+            item.status = request.json['status']
+        if 'category' in request.json:
+            item.category = request.json['category']
+        if 'charity' in request.json:
+            item.charity = request.json['charity']
+        if 'image' in request.json:
+            item.image = request.json['image']
+
+        db.session.commit()
+        return item
+
+    @marshal_with(item_fields)
+    def delete(self, item_id=None):
+        item = Item.query.get(item_id)
+
+        db.session.delete(item)
         db.session.commit()
 
         return item
