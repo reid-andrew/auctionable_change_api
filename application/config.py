@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -6,7 +8,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = False
     # SECRET = 'this-really-needs-to-be-changed'
-    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/auctionable_change_api"
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
