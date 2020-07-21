@@ -1,7 +1,7 @@
-from application import app
+from application import create_app
 
 
 class WelcomeRoutes:
-    @app.route("/")
-    def hello():
+    @create_app.route("/")
+    def hello(self):
         return "Hello World!"
