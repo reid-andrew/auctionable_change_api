@@ -6,7 +6,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = False
     # SECRET = 'this-really-needs-to-be-changed'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/auctionable_change_api"
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
@@ -19,6 +19,7 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     BUNDLE_ERRORS = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
 
 
 class ProductionConfig(Config):
@@ -26,8 +27,8 @@ class ProductionConfig(Config):
     TESTING = False
 
 
-# app_config = {
-#     'development': DevelopmentConfig,
-#     'testing': TestingConfig,
-#     'production': ProductionConfig,
-# }
+app_config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+}
