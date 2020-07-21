@@ -17,8 +17,10 @@ def create_app(config_name):
     api = Api(app)
 
     from application.models.item import Item
+    from application.controllers.welcome import WelcomeResources
     from application.controllers.items import ItemResources
 
+    api.add_resource(WelcomeResources, '/')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
 
     return app
