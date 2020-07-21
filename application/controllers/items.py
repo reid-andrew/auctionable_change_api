@@ -1,9 +1,9 @@
-from app import app, db
+from application import app, db
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, reqparse, request
 from flask_restful import fields, marshal_with, marshal
-from app.models.item import Item
+from application.models.item import Item
 
 item_fields = {
     'id': fields.Integer,

@@ -1,8 +1,8 @@
 import pytest
 
-from project import create_app, db
-from project.config import get_env_db_url
-from project.config import TestingConfig
+from application import create_app, db
+from config import get_env_db_url
+from config import TestingConfig
 
 
 @pytest.yield_fixture
@@ -15,7 +15,7 @@ def app():
 
             # always starting with an empty DB
             db.drop_all()
-            from project.models.model1 import Model1
+            from application.models.item import Item
 
             db.create_all()
 

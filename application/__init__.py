@@ -3,22 +3,22 @@
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_restful import Api
 #
-# app = Flask(__name__)
+# application = Flask(__name__)
 #
-# app.config.from_object(os.environ['APP_SETTINGS'])
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app)
+# application.config.from_object(os.environ['APP_SETTINGS'])
+# application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(application)
 #
-# api = Api(app)
+# api = Api(application)
 #
-# from app.models.item import Item
-# from app.controllers.items import ItemResources
-# from app.controllers.welcome import WelcomeRoutes
+# from application.models.item import Item
+# from application.controllers.items import ItemResources
+# from application.controllers.welcome import WelcomeRoutes
 #
 # api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
 #
 # if __name__ == '__main__':
-#     app.run()
+#     application.run()
 import os
 from flask import Flask, jsonify
 from flask_restful import Api
@@ -50,9 +50,9 @@ def create_app(config_name):
 
     api = Api(app)
 
-    from app.models.item import Item
-    from app.controllers.items import ItemResources
-    from app.controllers.welcome import WelcomeRoutes
+    from application.models.item import Item
+    from application.controllers.items import ItemResources
+    from application.controllers.welcome import WelcomeRoutes
 
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
 
