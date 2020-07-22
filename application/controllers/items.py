@@ -13,7 +13,23 @@ item_fields = {
     'status': fields.String,
     'category': fields.String,
     'charity': fields.String,
-    'image': fields.String
+    'image': fields.String,
+    'bids': fields.List(
+        fields.Nested(
+            {
+                'id': fields.Integer,
+                'item_id': fields.Integer,
+                'bidder_name': fields.String,
+                'bidder_email': fields.String,
+                'amount': fields.Float,
+                'street_address': fields.String,
+                'city': fields.String,
+                'state': fields.String,
+                'zip_code': fields.String,
+                'receipt': fields.String
+            }
+        )
+    ),
 }
 
 item_list_fields = {
@@ -27,56 +43,56 @@ item_post_parser.add_argument(
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='title parameter is required'
 )
 item_post_parser.add_argument(
     'description',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='description parameter is required'
 )
 item_post_parser.add_argument(
     'price',
     type=float,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='price parameter is required'
 )
 item_post_parser.add_argument(
     'donor',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='donor parameter is required'
 )
 item_post_parser.add_argument(
     'status',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='status parameter is required'
 )
 item_post_parser.add_argument(
     'category',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='category parameter is required'
 )
 item_post_parser.add_argument(
     'charity',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='charity parameter is required'
 )
 item_post_parser.add_argument(
     'image',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='image parameter is required'
 )
 
 

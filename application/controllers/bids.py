@@ -6,10 +6,11 @@ from application.models.bid import Bid
 
 bid_fields = {
     'id': fields.Integer,
+    'item_id': fields.Integer,
     'bidder_name': fields.String,
     'bidder_email': fields.String,
     'amount': fields.Float,
-    'stress_address': fields.String,
+    'street_address': fields.String,
     'city': fields.String,
     'state': fields.String,
     'zip_code': fields.String,
@@ -17,66 +18,73 @@ bid_fields = {
 }
 
 bid_list_fields = {
-    'amount': fields.Integer,
+    'count': fields.Integer,
     'bids': fields.List(fields.Nested(bid_fields))
 }
 
 bid_post_parser = reqparse.RequestParser()
 bid_post_parser.add_argument(
+    'item_id',
+    type=int,
+    required=True,
+    location=['json'],
+    help='item_id parameter is required'
+)
+bid_post_parser.add_argument(
     'bidder_name',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='bidder_name parameter is required'
 )
 bid_post_parser.add_argument(
     'bidder_email',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='bidder_email parameter is required'
 )
 bid_post_parser.add_argument(
     'amount',
     type=float,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='amount parameter is required'
 )
 bid_post_parser.add_argument(
     'street_address',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='street_address parameter is required'
 )
 bid_post_parser.add_argument(
     'city',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='city parameter is required'
 )
 bid_post_parser.add_argument(
     'state',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='state parameter is required'
 )
 bid_post_parser.add_argument(
     'zip_code',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='zip_code parameter is required'
 )
 bid_post_parser.add_argument(
     'receipt',
     type=str,
     required=True,
     location=['json'],
-    help='name parameter is required'
+    help='receipt parameter is required'
 )
 
 
