@@ -14,5 +14,7 @@ class Item(db.Model):
     charity = db.Column(db.String())
     image = db.Column(db.String())
 
+    bids = db.relationship('Bid', backref='items', lazy='select')
+
     def __repr__(self):
         return '<id {}>'.format(self.id)

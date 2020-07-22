@@ -14,5 +14,11 @@ class Bid(db.Model):
     zip_code = db.Column(db.String())
     receipt = db.Column(db.String())
 
+    item_id = db.Column(
+        db.Integer,
+        db.ForeignKey('items.id'),
+        nullable=False
+    )
+
     def __repr__(self):
         return '<id {}>'.format(self.id)
