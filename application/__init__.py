@@ -19,8 +19,11 @@ def create_app(config_name):
     from application.models.item import Item
     from application.controllers.welcome import WelcomeResources
     from application.controllers.items import ItemResources
+    from application.models.bid import Bid
+    from application.controllers.bids import BidResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
+    api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
 
     return app
