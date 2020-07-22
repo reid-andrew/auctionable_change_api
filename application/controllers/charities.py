@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
-from application.popos.charity import charitites
+from application.services.charity_service import return_charities
 
 charity_fields = {
     'id': fields.Integer,
@@ -43,9 +43,10 @@ item_post_parser.add_argument(
 
 class CharityResources(Resource):
     def get(self, search_term=None):
-        charities = charitites(search_term)
+        search_term  = "" if search_term == None else search_term
+        chars = return_charities(search_term)
 
         return marshal({
-            'count': len(charities),
-            'charities': [marshal(c, charity_fields) for c in charities]
+            'count': len(chars),
+            'charities': [marshal(c, charity_fields) for c in chars]
         }, charity_list_fields)
