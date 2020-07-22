@@ -1,7 +1,6 @@
 from application import db
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Resource, reqparse, request
+from flask import request
+from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.item import Item
 
@@ -79,6 +78,7 @@ item_post_parser.add_argument(
     location=['json'],
     help='name parameter is required'
 )
+
 
 class ItemResources(Resource):
     def get(self, item_id=None):

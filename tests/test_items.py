@@ -3,6 +3,7 @@ import json
 from application import create_app, db
 from application.models.item import Item
 
+
 class TestUsers(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -11,28 +12,28 @@ class TestUsers(unittest.TestCase):
             db.create_all()
 
         item = Item(
-            description = "Antique Tea set",
-            donor = "Demo McDemoFace",
-            price = 140.00,
-            status = "For Sale",
-            title = "Tea Set",
-            category = "furniture",
-            charity = "Big Cat Rescue",
-            image = "img.ul"
+            description="Antique Tea set",
+            donor="Demo McDemoFace",
+            price=140.00,
+            status="For Sale",
+            title="Tea Set",
+            category="furniture",
+            charity="Big Cat Rescue",
+            image="img.ul"
           )
         with self.app.app_context():
             db.session.add(item)
             db.session.commit()
 
         item = Item(
-          description = "Vintage wood rocking chair",
-          donor = "Demo McDemoFace",
-          price = 40.00,
-          status = "For Sale",
-          title = "Rocking Chair",
-          category = 'furniture',
-          charity = 'Big Cat Rescue',
-          image = 'img.ul'
+          description="Vintage wood rocking chair",
+          donor="Demo McDemoFace",
+          price=40.00,
+          status="For Sale",
+          title="Rocking Chair",
+          category='furniture',
+          charity='Big Cat Rescue',
+          image='img.ul'
           )
         with self.app.app_context():
             db.session.add(item)
