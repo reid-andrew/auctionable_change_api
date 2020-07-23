@@ -98,7 +98,7 @@ item_post_parser.add_argument(
 )
 item_post_parser.add_argument(
     'charity_score',
-    type=str,
+    type=int,
     required=True,
     location=['json'],
     help='charity_score parameter is required'
