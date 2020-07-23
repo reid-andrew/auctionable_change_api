@@ -2,12 +2,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from application.config import app_config
+from flask_swagger_ui import get_swaggerui_blueprint
+# import application.static
 
 db = SQLAlchemy()
 
 
 def create_app(config_name):
     app = Flask(__name__)
+
+    SWAGGER_URL = '/swagger'
+    API_URL = '/static/swagger.json'
+    SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={
+            'app_name': "auctionable_change_api"
+        }
+    )
+    app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
