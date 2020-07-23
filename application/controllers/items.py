@@ -152,6 +152,10 @@ class ItemResources(Resource):
             item.category = request.json['category']
         if 'charity' in request.json:
             item.charity = request.json['charity']
+        if 'charity_url' in request.json:
+            item.charity_url = request.json['charity_url']
+        if 'charity_score' in request.json:
+            item.charity_score = request.json['charity_score']
         if 'image' in request.json:
             item.image = request.json['image']
 
