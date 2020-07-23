@@ -19,6 +19,8 @@ class TestUsers(unittest.TestCase):
             title="Tea Set",
             category="furniture",
             charity="Big Cat Rescue",
+            charity_url="http://www.thisisatotallyligiturl.com",
+            charity_score=4,
             image="img.ul"
           )
         with self.app.app_context():
@@ -33,6 +35,8 @@ class TestUsers(unittest.TestCase):
           title="Rocking Chair",
           category='furniture',
           charity='Big Cat Rescue',
+          charity_url="http://www.thisisatotallyligiturl.com",
+          charity_score=4,
           image='img.ul'
           )
         with self.app.app_context():
@@ -70,6 +74,8 @@ class TestUsers(unittest.TestCase):
                 'title': 'Android Tablet',
                 'category': 'electronics',
                 'charity': 'Big Cat Rescue',
+                'charity_url': "http://www.thisisatotallyligiturl.com",
+                'charity_score': 4,
                 'image': 'img.ul'
             },
             follow_redirects=True
