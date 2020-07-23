@@ -79,9 +79,8 @@ item_post_parser.add_argument(
 item_post_parser.add_argument(
     'status',
     type=str,
-    required=True,
-    location=['json'],
-    help='status parameter is required'
+    required=False,
+    location=['json']
 )
 item_post_parser.add_argument(
     'category',
@@ -156,8 +155,6 @@ class ItemResources(Resource):
             item.donor = request.json['donor']
         if 'donor_email' in request.json:
             item.donor_email = request.json['donor_email']
-        if 'status' in request.json:
-            item.status = request.json['status']
         if 'category' in request.json:
             item.category = request.json['category']
         if 'charity' in request.json:
