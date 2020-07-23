@@ -9,6 +9,7 @@ class Item(db.Model):
     description = db.Column(db.String())
     price = db.Column(db.Float())
     donor = db.Column(db.String())
+    donor_email = db.Column(db.String())
     status = db.Column(db.String())
     category = db.Column(db.String())
     charity = db.Column(db.String())

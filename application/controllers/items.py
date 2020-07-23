@@ -10,6 +10,7 @@ item_fields = {
     'description': fields.String,
     'price': fields.Float,
     'donor': fields.String,
+    'donor_email': fields.String,
     'status': fields.String,
     'category': fields.String,
     'charity': fields.String,
@@ -63,6 +64,13 @@ item_post_parser.add_argument(
 )
 item_post_parser.add_argument(
     'donor',
+    type=str,
+    required=True,
+    location=['json'],
+    help='donor parameter is required'
+)
+item_post_parser.add_argument(
+    'donor_email',
     type=str,
     required=True,
     location=['json'],
@@ -146,6 +154,8 @@ class ItemResources(Resource):
             item.price = request.json['price']
         if 'donor' in request.json:
             item.donor = request.json['donor']
+        if 'donor_email' in request.json:
+            item.donor_email = request.json['donor_email']
         if 'status' in request.json:
             item.status = request.json['status']
         if 'category' in request.json:
