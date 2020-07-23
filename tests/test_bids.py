@@ -15,6 +15,7 @@ class TestUsers(unittest.TestCase):
         item = Item(
             description="Antique Tea set",
             donor="Demo McDemoFace",
+            donor_email="demomcdemoface@example.com",
             price=140.00,
             status="For Sale",
             title="Tea Set",

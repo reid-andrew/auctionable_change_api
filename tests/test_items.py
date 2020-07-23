@@ -14,6 +14,7 @@ class TestUsers(unittest.TestCase):
         item = Item(
             description="Antique Tea set",
             donor="Demo McDemoFace",
+            donor_email="demomcdemoface@example.com",
             price=140.00,
             status="For Sale",
             title="Tea Set",
@@ -30,6 +31,7 @@ class TestUsers(unittest.TestCase):
         item = Item(
           description="Vintage wood rocking chair",
           donor="Demo McDemoFace",
+          donor_email="demomcdemoface@example.com",
           price=40.00,
           status="For Sale",
           title="Rocking Chair",
@@ -68,6 +70,7 @@ class TestUsers(unittest.TestCase):
             json={
                 'description': '12 inch tablet from Samsung',
                 'donor': 'Demo McDemoFace',
+                'donor_email': "demomcdemoface@example.com",
                 'id': 2,
                 'price': 56.00,
                 'status': 'For Sale',
