@@ -16,7 +16,6 @@ class TestUsers(unittest.TestCase):
             donor="Demo McDemoFace",
             donor_email="demomcdemoface@example.com",
             price=140.00,
-            status="For Sale",
             title="Tea Set",
             category="furniture",
             charity="Big Cat Rescue",
@@ -33,7 +32,6 @@ class TestUsers(unittest.TestCase):
           donor="Demo McDemoFace",
           donor_email="demomcdemoface@example.com",
           price=40.00,
-          status="For Sale",
           title="Rocking Chair",
           category='furniture',
           charity='Big Cat Rescue',
@@ -63,6 +61,7 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['items'][0]['charity'], 'Big Cat Rescue')
         self.assertEquals(payload['items'][-1]['donor'], 'Demo McDemoFace')
         self.assertEquals(payload['items'][-1]['price'], 40.00)
+        self.assertEquals(payload['items'][-1]['status'], 'available')
 
     def test_create_items(self):
         response = self.test_app.post(
