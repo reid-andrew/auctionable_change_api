@@ -13,6 +13,8 @@ item_fields = {
     'status': fields.String,
     'category': fields.String,
     'charity': fields.String,
+    'charity_url': fields.String,
+    'charity_score': fields.Integer,
     'image': fields.String,
     'bids': fields.List(
         fields.Nested(
