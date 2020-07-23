@@ -20,6 +20,8 @@ class TestUsers(unittest.TestCase):
             title="Tea Set",
             category="furniture",
             charity="Big Cat Rescue",
+            charity_url="http://www.thisisatotallyligiturl.com",
+            charity_score=4,
             image="img.ul"
         )
         with self.app.app_context():
