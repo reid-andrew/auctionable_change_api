@@ -90,6 +90,20 @@ item_post_parser.add_argument(
     help='charity parameter is required'
 )
 item_post_parser.add_argument(
+    'charity_url',
+    type=str,
+    required=True,
+    location=['json'],
+    help='charity_url parameter is required'
+)
+item_post_parser.add_argument(
+    'charity_score',
+    type=str,
+    required=True,
+    location=['json'],
+    help='charity_score parameter is required'
+)
+item_post_parser.add_argument(
     'image',
     type=str,
     required=True,
