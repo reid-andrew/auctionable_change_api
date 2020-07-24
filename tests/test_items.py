@@ -62,6 +62,20 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['items'][-1]['donor'], 'Demo McDemoFace')
         self.assertEquals(payload['items'][-1]['price'], 40.00)
         self.assertEquals(payload['items'][-1]['status'], 'available')
+    
+
+    def test_get_one_item(self):
+        response = self.test_app.get(
+            '/items/2',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['id'], 2)
+        self.assertEquals(payload['title'], 'Rocking Chair')
+        self.assertNotEqual(payload['title'], 'Antique Tea set')
+      
 
     def test_create_items(self):
         response = self.test_app.post(
