@@ -1,8 +1,9 @@
-from application import db
+from application import db, create_app
 from flask import request
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.item import Item
+from application.popos.invalid_usage import InvalidUsage
 
 item_fields = {
     'id': fields.Integer,
@@ -120,10 +121,23 @@ item_post_parser.add_argument(
 
 
 class ItemResources(Resource):
+    # def get(self, item_id=None):
+    #     if item_id:
+    #         item = Item.query.filter_by(id=item_id).first()
+    #         return marshal(item, item_fields)
+    #     else:
+    #         items = Item.query.filter_by(status='available').all()
+    #         return marshal({
+    #             'count': len(items),
+    #             'items': [marshal(i, item_fields) for i in items]
+    #         }, item_list_fields)
     def get(self, item_id=None):
         if item_id:
             item = Item.query.filter_by(id=item_id).first()
-            return marshal(item, item_fields)
+            if not item:
+                raise InvalidUsage('That item does not exist', status_code=404)
+            else:
+                return marshal(item, item_fields)
         else:
             items = Item.query.filter_by(status='available').all()
             return marshal({

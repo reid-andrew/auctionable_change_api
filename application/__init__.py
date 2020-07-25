@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from application.config import app_config
+from application.popos.invalid_usage import InvalidUsage
+from flask import jsonify
 
 db = SQLAlchemy()
 
@@ -30,4 +32,10 @@ def create_app(config_name):
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
 
+    @app.errorhandler(InvalidUsage)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+    
     return app
