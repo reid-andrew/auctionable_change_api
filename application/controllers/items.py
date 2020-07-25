@@ -148,36 +148,40 @@ class ItemResources(Resource):
     @marshal_with(item_fields)
     def put(self, item_id=None):
         item = Item.query.get(item_id)
+        if not item:
+            raise InvalidUsage('That item does not exist', status_code=404)
+        else:
+            if 'title' in request.json:
+                item.title = request.json['title']
+            if 'description' in request.json:
+                item.description = request.json['description']
+            if 'price' in request.json:
+                item.price = request.json['price']
+            if 'donor' in request.json:
+                item.donor = request.json['donor']
+            if 'donor_email' in request.json:
+                item.donor_email = request.json['donor_email']
+            if 'category' in request.json:
+                item.category = request.json['category']
+            if 'charity' in request.json:
+                item.charity = request.json['charity']
+            if 'charity_url' in request.json:
+                item.charity_url = request.json['charity_url']
+            if 'charity_score' in request.json:
+                item.charity_score = request.json['charity_score']
+            if 'image' in request.json:
+                item.image = request.json['image']
 
-        if 'title' in request.json:
-            item.title = request.json['title']
-        if 'description' in request.json:
-            item.description = request.json['description']
-        if 'price' in request.json:
-            item.price = request.json['price']
-        if 'donor' in request.json:
-            item.donor = request.json['donor']
-        if 'donor_email' in request.json:
-            item.donor_email = request.json['donor_email']
-        if 'category' in request.json:
-            item.category = request.json['category']
-        if 'charity' in request.json:
-            item.charity = request.json['charity']
-        if 'charity_url' in request.json:
-            item.charity_url = request.json['charity_url']
-        if 'charity_score' in request.json:
-            item.charity_score = request.json['charity_score']
-        if 'image' in request.json:
-            item.image = request.json['image']
-
-        db.session.commit()
-        return item
+            db.session.commit()
+            return item
 
     @marshal_with(item_fields)
     def delete(self, item_id=None):
         item = Item.query.get(item_id)
+        if not item:
+            raise InvalidUsage('That item does not exist', status_code=404)
+        else:
+            db.session.delete(item)
+            db.session.commit()
 
-        db.session.delete(item)
-        db.session.commit()
-
-        return item
+            return item
