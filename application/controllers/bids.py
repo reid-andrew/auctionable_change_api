@@ -3,6 +3,7 @@ from flask import request
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid import Bid
+from application.popos.invalid_usage import InvalidUsage
 
 bid_fields = {
     'id': fields.Integer,
@@ -92,7 +93,10 @@ class BidResources(Resource):
     def get(self, bid_id=None):
         if bid_id:
             bid = Bid.query.filter_by(id=bid_id).first()
-            return marshal(bid, bid_fields)
+            if not bid:
+                raise InvalidUsage('That bid does not exist', status_code=404)
+            else:
+                return marshal(bid, bid_fields)
         else:
             bids = Bid.query.all()
             return marshal({
@@ -113,32 +117,36 @@ class BidResources(Resource):
     @marshal_with(bid_fields)
     def put(self, bid_id=None):
         bid = Bid.query.get(bid_id)
+        if not bid:
+            raise InvalidUsage('That bid does not exist', status_code=404)
+        else:
+            if 'bidder_name' in request.json:
+                bid.bidder_name = request.json['bidder_name']
+            if 'bidder_email' in request.json:
+                bid.bidder_email = request.json['bidder_email']
+            if 'amount' in request.json:
+                bid.amount = request.json['amount']
+            if 'street_address' in request.json:
+                bid.street_address = request.json['street_address']
+            if 'city' in request.json:
+                bid.city = request.json['city']
+            if 'state' in request.json:
+                bid.state = request.json['state']
+            if 'zip_code' in request.json:
+                bid.zip_code = request.json['zip_code']
+            if 'receipt' in request.json:
+                bid.receipt = request.json['receipt']
 
-        if 'bidder_name' in request.json:
-            bid.bidder_name = request.json['bidder_name']
-        if 'bidder_email' in request.json:
-            bid.bidder_email = request.json['bidder_email']
-        if 'amount' in request.json:
-            bid.amount = request.json['amount']
-        if 'street_address' in request.json:
-            bid.street_address = request.json['street_address']
-        if 'city' in request.json:
-            bid.city = request.json['city']
-        if 'state' in request.json:
-            bid.state = request.json['state']
-        if 'zip_code' in request.json:
-            bid.zip_code = request.json['zip_code']
-        if 'receipt' in request.json:
-            bid.receipt = request.json['receipt']
-
-        db.session.commit()
-        return bid
+            db.session.commit()
+            return bid
 
     @marshal_with(bid_fields)
     def delete(self, bid_id=None):
         bid = Bid.query.get(bid_id)
+        if not bid:
+            raise InvalidUsage('That bid does not exist', status_code=404)
+        else:
+            db.session.delete(bid)
+            db.session.commit()
 
-        db.session.delete(bid)
-        db.session.commit()
-
-        return bid
+            return bid
