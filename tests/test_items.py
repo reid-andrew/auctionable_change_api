@@ -102,6 +102,29 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['title'], 'Android Tablet')
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
+    def test_return_error_for_missing_title_post(self):
+        try:
+            response = self.test_app.post(
+                '/items',
+                json={
+                    'description': '12 inch tablet from Samsung',
+                    'donor': 'Demo McDemoFace',
+                    'donor_email': "demomcdemoface@example.com",
+                    'id': 2,
+                    'price': 56.00,
+                    'category': 'electronics',
+                    'charity': 'Big Cat Rescue',
+                    'charity_url': "http://www.thisisatotallyligiturl.com",
+                    'charity_score': 4,
+                    'image': 'img.ul'
+                },
+                follow_redirects=True
+            )
+        except Exception as e:
+            return (str(e))
+
+        self.assertEquals(response.status, "400 BAD REQUEST")
+
 
 if __name__ == "__main__":
     unittest.main()
