@@ -3,6 +3,7 @@ from flask import request
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid import Bid
+from application.models.item import Item
 from application.popos.invalid_usage import InvalidUsage
 
 bid_fields = {
@@ -108,11 +109,15 @@ class BidResources(Resource):
     def post(self):
         args = bid_post_parser.parse_args()
 
-        bid = Bid(**args)
-        db.session.add(bid)
-        db.session.commit()
+        item = Item.query.filter_by(id=args["item_id"]).first()
+        if not item:
+            raise InvalidUsage('That item does not exist', status_code=404)
+        else:
+            bid = Bid(**args)
+            db.session.add(bid)
+            db.session.commit()
 
-        return bid
+            return bid
 
     @marshal_with(bid_fields)
     def put(self, bid_id=None):
