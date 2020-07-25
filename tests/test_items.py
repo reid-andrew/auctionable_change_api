@@ -125,6 +125,14 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
+    def test_error_for_nonexisting_item(self):
+        response = self.test_app.get(
+            '/items/10',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
+        
 
 if __name__ == "__main__":
     unittest.main()
