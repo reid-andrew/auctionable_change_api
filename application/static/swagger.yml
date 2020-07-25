@@ -1,0 +1,291 @@
+openapi: 3.0.0
+info:
+  title: Auctionable Change
+  description: Backend API for the Auctionable Change mobile application.
+                Created by Turing School of Software and Design students
+                Stephanie Friend, Kevin McGrevey, Andrew Reid.
+  version: 1.0.0
+  authors: Stephanie Friend, Kevin McGrevey, Andrew Reid
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://auctionable-change-api.herokuapp.com
+    description: Main (production) server
+  - url: http://127.0.0.1:5000
+    description: Local (development) server
+tags:
+  - name: Items
+    description: Endpoints for Item CRUD
+  - name: Bids
+    description: Endpoints for Bid CRUD
+  - name: Charities
+    description: Endpoints for querying Charity Navigator
+paths:
+  /items:
+    get:
+      summary: Returns a list of available items.
+      tags:
+        - Items
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+        '400':
+          description: Bad Request
+    post:
+      summary: Creates a new item.
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item_create'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: Bad Request
+  /items/<id>:
+    get:
+      summary: Returns a selected items.
+      tags:
+        - Items
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+        '404':
+          description: Item not found
+    put:
+      summary: Updates a selected items.
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item_create'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+        '404':
+          description: Item not found
+    delete:
+      summary: Removes an item.
+      tags:
+        - Items
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: Item not found
+  /bids:
+      get:
+        summary: Returns a list of available bids.
+        tags:
+          - Bids
+        responses:
+          '200':    # status code
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Bid'
+
+          '400':
+            description: Bad Request
+      post:
+        summary: Creates a new bid.
+        tags:
+          - Bids
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bid_create'
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Bid'
+          '400':
+            description: Bad Request
+  /bids/<id>:
+    get:
+      summary: Returns a selected bids.
+      tags:
+        - Bids
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bid'
+
+        '404':
+          description: Bid not found
+    put:
+      summary: Updates a selected bids.
+      tags:
+        - Bids
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bid_create'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bid'
+
+        '404':
+          description: Bid not found
+    delete:
+      summary: Removes an bid.
+      tags:
+        - Bids
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bid'
+        '404':
+          description: Bid not found
+  /charities:
+    get:
+      summary: Returns a list of rated charities from Charity Navigator.
+      tags:
+        - Charity
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+        '400':
+          description: Bad Request
+  /charities/<search_term>:
+    get:
+      summary: Searches for charities which match search term.
+      tags:
+        - Charity
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+        '400':
+          description: Bad Request
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        donor:
+          type: string
+        status:
+          type: string
+        category:
+          type: string
+        charity:
+          type: string
+        charity_url:
+          type: string
+        charity_score:
+          type: string
+        image:
+          type: string
+    Item*:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        donor:
+          type: string
+        category:
+          type: string
+        charity:
+          type: string
+        charity_url:
+          type: string
+        charity_score:
+          type: string
+        image:
+          type: string
+    Bid:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
+        bidder_name:
+          type: string
+        bidder_email:
+          type: string
+        amount:
+          type: number
+          format: float
+        street_address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        receipt:
+          type: string
+    Charity:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        name:
+          type: string
+        rating:
+          type: integer

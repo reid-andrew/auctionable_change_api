@@ -12,7 +12,7 @@ def create_app(config_name):
     app = Flask(__name__)
 
     SWAGGER_URL = '/swagger'
-    API_URL = '/static/swagger.json'
+    API_URL = '/static/swagger.yml'
     SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
@@ -43,5 +43,5 @@ def create_app(config_name):
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
 
-    
+
     return app
