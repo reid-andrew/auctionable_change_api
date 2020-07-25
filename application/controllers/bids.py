@@ -1,10 +1,9 @@
 from application import db
-from flask import request
+from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid import Bid
 from application.models.item import Item
-from application.popos.invalid_usage import InvalidUsage
 
 bid_fields = {
     'id': fields.Integer,
@@ -95,7 +94,7 @@ class BidResources(Resource):
         if bid_id:
             bid = Bid.query.filter_by(id=bid_id).first()
             if not bid:
-                raise InvalidUsage('That bid does not exist', status_code=404)
+                abort(404, description='That bid does not exist')
             else:
                 return marshal(bid, bid_fields)
         else:
@@ -111,7 +110,7 @@ class BidResources(Resource):
 
         item = Item.query.filter_by(id=args["item_id"]).first()
         if not item:
-            raise InvalidUsage('That item does not exist', status_code=404)
+            abort(404, description='That item does not exist')
         else:
             bid = Bid(**args)
             db.session.add(bid)
@@ -123,7 +122,7 @@ class BidResources(Resource):
     def put(self, bid_id=None):
         bid = Bid.query.get(bid_id)
         if not bid:
-            raise InvalidUsage('That bid does not exist', status_code=404)
+            abort(404, description='That bid does not exist')
         else:
             if 'bidder_name' in request.json:
                 bid.bidder_name = request.json['bidder_name']
@@ -149,7 +148,7 @@ class BidResources(Resource):
     def delete(self, bid_id=None):
         bid = Bid.query.get(bid_id)
         if not bid:
-            raise InvalidUsage('That bid does not exist', status_code=404)
+            abort(404, description='That bid does not exist')
         else:
             db.session.delete(bid)
             db.session.commit()
