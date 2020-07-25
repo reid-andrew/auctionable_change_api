@@ -4,7 +4,6 @@ python:
 install:
 - pip install -r requirements.txt
 - pip install requests
-- pip install jsonify
 script:
 - nosetests
 deploy:
