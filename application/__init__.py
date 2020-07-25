@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from application.config import app_config
 from flask_swagger_ui import get_swaggerui_blueprint
-# import application.static
+import application.static
 
 db = SQLAlchemy()
 

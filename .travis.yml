@@ -4,6 +4,7 @@ python:
 install:
 - pip install -r requirements.txt
 - pip install requests
+- pip install flask-swagger-ui
 script:
 - nosetests
 deploy:
