@@ -1,9 +1,8 @@
 from application import db, create_app
-from flask import request
+from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.item import Item
-from application.popos.invalid_usage import InvalidUsage
 
 item_fields = {
     'id': fields.Integer,
@@ -125,7 +124,7 @@ class ItemResources(Resource):
         if item_id:
             item = Item.query.filter_by(id=item_id).first()
             if not item:
-                raise InvalidUsage('That item does not exist', status_code=404)
+                abort(404, description='That item does not exist')
             else:
                 return marshal(item, item_fields)
         else:
@@ -149,7 +148,7 @@ class ItemResources(Resource):
     def put(self, item_id=None):
         item = Item.query.get(item_id)
         if not item:
-            raise InvalidUsage('That item does not exist', status_code=404)
+            abort(404, description='That item does not exist')
         else:
             if 'title' in request.json:
                 item.title = request.json['title']
@@ -179,7 +178,7 @@ class ItemResources(Resource):
     def delete(self, item_id=None):
         item = Item.query.get(item_id)
         if not item:
-            raise InvalidUsage('That item does not exist', status_code=404)
+            abort(404, description='That item does not exist')
         else:
             db.session.delete(item)
             db.session.commit()
