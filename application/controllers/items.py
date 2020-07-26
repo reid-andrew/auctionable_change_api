@@ -1,4 +1,4 @@
-from application import db, create_app
+from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
@@ -17,6 +17,7 @@ item_fields = {
     'charity_url': fields.String,
     'charity_score': fields.Integer,
     'image': fields.String,
+    'bidding_time': fields.Float,
     'bids': fields.List(
         fields.Nested(
             {
@@ -24,12 +25,7 @@ item_fields = {
                 'item_id': fields.Integer,
                 'bidder_name': fields.String,
                 'bidder_email': fields.String,
-                'amount': fields.Float,
-                'street_address': fields.String,
-                'city': fields.String,
-                'state': fields.String,
-                'zip_code': fields.String,
-                'receipt': fields.String
+                'amount': fields.Float
             }
         )
     ),
@@ -117,6 +113,12 @@ item_post_parser.add_argument(
     location=['json'],
     help='image parameter is required'
 )
+item_post_parser.add_argument(
+    'bidding_time',
+    type=str,
+    required=False,
+    location=['json']
+)
 
 
 class ItemResources(Resource):
@@ -170,6 +172,8 @@ class ItemResources(Resource):
                 item.charity_score = request.json['charity_score']
             if 'image' in request.json:
                 item.image = request.json['image']
+            if 'bidding_time' in request.json:
+                item.bidding_time = request.json['bidding_time']
 
             db.session.commit()
             return item

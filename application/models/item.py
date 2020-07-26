@@ -10,12 +10,13 @@ class Item(db.Model):
     price = db.Column(db.Float())
     donor = db.Column(db.String())
     donor_email = db.Column(db.String())
-    status = db.Column(db.String(),default='available')
+    status = db.Column(db.String(), default='available')
     category = db.Column(db.String())
     charity = db.Column(db.String())
     charity_url = db.Column(db.String())
     charity_score = db.Column(db.Integer())
     image = db.Column(db.String())
+    bidding_time = db.Column(db.Float(), default=7)
 
     bids = db.relationship('Bid', backref='items', lazy='select')
 
