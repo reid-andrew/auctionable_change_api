@@ -33,11 +33,6 @@ class TestUsers(unittest.TestCase):
             bidder_name="Testy McTesterson",
             bidder_email="testymctesterson@example.com",
             amount=300.00,
-            street_address="123 This Is My Street Way",
-            city="My City",
-            state="Colorado",
-            zip_code="12345",
-            receipt="img.ul",
             item_id=1
           )
         with self.app.app_context():
@@ -48,11 +43,6 @@ class TestUsers(unittest.TestCase):
           bidder_name="Elmo",
           bidder_email="elmo@example.com",
           amount=400.00,
-          street_address="123 Sesame Street ",
-          city="New York",
-          state='New York',
-          zip_code='10005',
-          receipt='img.ul',
           item_id=1
           )
         with self.app.app_context():
@@ -73,8 +63,8 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 2)
-        self.assertEquals(payload['bids'][0]['city'], 'My City')
-        self.assertEquals(payload['bids'][0]['zip_code'], '12345')
+        self.assertEquals(payload['bids'][0]['bidder_name'], 'Testy McTesterson')
+        self.assertEquals(payload['bids'][0]['amount'], 300.00)
         self.assertEquals(payload['bids'][-1]['bidder_email'], 'elmo@example.com')
         self.assertEquals(payload['bids'][-1]['amount'], 400.00)
 
@@ -86,11 +76,6 @@ class TestUsers(unittest.TestCase):
                 'bidder_email': 'granger@example.com',
                 'id': 2,
                 'amount': 500.00,
-                'street_address': '5600 Hogwarts Way',
-                'city': 'Magic',
-                'state': 'Spells',
-                'zip_code': '09876',
-                'receipt': 'img.ul',
                 'item_id': 1
             },
             follow_redirects=True
@@ -98,8 +83,8 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
-        self.assertEquals(payload['city'], 'Magic')
-        self.assertEquals(payload['zip_code'], '09876')
+        self.assertEquals(payload['bidder_name'], 'Hermione')
+        self.assertEquals(payload['bidder_email'], 'granger@example.com')
 
 
 if __name__ == "__main__":
