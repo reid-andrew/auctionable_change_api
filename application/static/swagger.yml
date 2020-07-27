@@ -56,7 +56,7 @@ paths:
           description: Bad Request
   /items/<id>:
     get:
-      summary: Returns a selected items.
+      summary: Returns a selected item.
       tags:
         - Items
       responses:
@@ -69,7 +69,7 @@ paths:
         '404':
           description: Item not found
     put:
-      summary: Updates a selected items.
+      summary: Updates a selected item.
       tags:
         - Items
       requestBody:
