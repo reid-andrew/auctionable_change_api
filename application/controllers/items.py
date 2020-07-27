@@ -135,6 +135,7 @@ class ItemResources(Resource):
             }, item_list_fields)
 
     @marshal_with(item_fields)
+
     def post(self):
         args = item_post_parser.parse_args()
 
@@ -145,6 +146,7 @@ class ItemResources(Resource):
         return item
 
     @marshal_with(item_fields)
+
     def put(self, item_id=None):
         item = Item.query.get(item_id)
         if not item:
@@ -177,6 +179,7 @@ class ItemResources(Resource):
             return item
 
     @marshal_with(item_fields)
+    
     def delete(self, item_id=None):
         item = Item.query.get(item_id)
         if not item:
