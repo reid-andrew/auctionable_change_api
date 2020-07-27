@@ -138,5 +138,50 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
+    def test_update_bids_only_updates_selected_fields(self):
+        response = self.test_app.put(
+            '/bids/1',
+            json={
+                'bidder_name': 'Updated Name',
+                'bidder_email': 'new@email.com'
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['bidder_name'], 'Updated Name')
+        self.assertEquals(payload['bidder_email'], 'new@email.com')
+        self.assertEquals(payload['zip_code'], '12345')
+        self.assertEquals(payload['city'], 'My City')
+
+    def test_update_can_update_all_fields(self):
+        response = self.test_app.put(
+            '/bids/1',
+            json={
+                'bidder_name': 'Joe Strummer',
+                'bidder_email': 'clampdown@clash.com',
+                'amount': 19.79,
+                'street_address': '123 Clash St.',
+                'city': 'Hitsville',
+                'state': 'UK',
+                'zip_code': '99999',
+                'receipt': 'www.death_or_glory.com'
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['bidder_name'], 'Joe Strummer')
+        self.assertEquals(payload['bidder_email'], 'clampdown@clash.com')
+        self.assertEquals(payload['amount'], 19.79)
+        self.assertEquals(payload['street_address'], '123 Clash St.')
+        self.assertEquals(payload['city'], 'Hitsville')
+        self.assertEquals(payload['state'], 'UK')
+        self.assertEquals(payload['zip_code'], '99999')
+        self.assertEquals(payload['receipt'], 'www.death_or_glory.com')
+
+
 if __name__ == "__main__":
     unittest.main()
