@@ -89,7 +89,15 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['id'], 2)
         self.assertEquals(payload['bidder_email'], 'elmo@example.com')
         self.assertEquals(payload['amount'], 400.00)
-        self.assertEquals(payload['city'], 'New York')  
+        self.assertEquals(payload['city'], 'New York')
+
+    def test_sad_path_for_nonexistent_bid(self):
+        response = self.test_app.get(
+            '/bids/10',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
 
     def test_create_bids(self):
         response = self.test_app.post(
