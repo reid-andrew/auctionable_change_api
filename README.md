@@ -26,3 +26,20 @@ FE Production:
  - Stephanie Friend ([GitHub](https://github.com/StephanieFriend), [LinkedIn](https://www.linkedin.com/in/s-friend/))
  - Kevin McGrevey ([GitHub](https://github.com/kmcgrevey), [LinkedIn](www.linkedin.com/in/‎kevin-mcgrevey‎-8660958/))
  - Andrew Reid ([GitHub](https://github.com/reid-andrew), [LinkedIn](https://www.linkedin.com/in/reida/))
+
+ ## Technologies and Frameworks
+- Back-End
+  - Language: Python
+  - Framework: Flask
+  - Testing: Nose
+  - Database: PostgreSQL
+  - Database Interaction & ORM: SQLAlchemy
+  - Database Migrations: Alembic (via Flask-Migration wrapper)
+  - API management: Flask-RESTful, Requests
+- CI/CD
+  - Continuous Integration: TravisCI
+  - Deployment: Heroku
+- Project Management
+  - Kanban & Sprint Planning: Github Project Boards
+  - Agile Planning & Retros: Miro
+  - Communication: Zoom, Slack, Tuple
