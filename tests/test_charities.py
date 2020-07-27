@@ -25,7 +25,7 @@ class TestCharities(unittest.TestCase):
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 100)
         self.assertEquals(payload['charities'][0]['id'], 10694045)
-        self.assertEquals(payload['charities'][1]['name'], 'SPCA of Westchester')
+        self.assertEquals(payload['charities'][0]['name'], 'Florida Breast Cancer Foundation')
 
     def test_gets_charities_with_search_term(self):
         response = self.test_app.get(
