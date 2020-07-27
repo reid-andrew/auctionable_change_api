@@ -129,7 +129,7 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
-    def test_update_items(self):
+    def test_update_items_only_updates_selected_fields(self):
         response = self.test_app.put(
             '/items/1',
             json={
@@ -146,6 +146,39 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['category'], 'furniture')
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
+        def test_update_can_update_all_fields(self):
+            response = self.test_app.put(
+                '/items/1',
+                json={
+                    'title': 'Updated Title',
+                    'description': 'Updated Item',
+                    'price': 9999.99,
+                    'donor': 'New Donor',
+                    'donor_email': 'new@donor.email',
+                    'status': 'unavailable',
+                    'category': 'New Category',
+                    'charity': 'New Charity',
+                    'charity_url': 'www.newcharity.org',
+                    'charity_score': 1,
+                    'image': 'www.newimage.com'
+                },
+                follow_redirects=True
+            )
+
+            self.assertEquals(response.status, "200 OK")
+            payload = json.loads(response.data)
+            self.assertEquals(payload['title'], 'Updated Title')
+            self.assertEquals(payload['description'], 'Updated Item')
+            self.assertEquals(payload['price'], 9999.99)
+            self.assertEquals(payload['donor'], 'New Donor')
+            self.assertEquals(payload['donor_email'], 'new@donor.email')
+            self.assertEquals(payload['status'], 'unavailable')
+            self.assertEquals(payload['category'], 'New Category')
+            self.assertEquals(payload['charity'], 'New Charity')
+            self.assertEquals(payload['charity_url'], 'www.newcharity.org')
+            self.assertEquals(payload['charity_score'], 1)
+            self.assertEquals(payload['image'], 'www.newimage.com')
+          
     def test_sad_path_for_update_item(self):
         response = self.test_app.put(
             '/items/1111',
