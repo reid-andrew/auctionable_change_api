@@ -4,13 +4,14 @@
 
 **Auctionable Change API** is the backend API for our [Turing School of Software and Design](https://turing.io/) capstone project, **Auctionable Change**.
 
-The idea behind **A.Change** is creating a platform in which an individual can post an item for sale/auction, set a minimum asking price and then select a charity to which the funds from that item's sale would be donated.
+The idea behind **A.change** is creating a platform in which an individual can post an item for sale/auction, set a minimum asking price and then select a charity to which the funds from that item's sale would be donated.
 
 This **API** functions to consume a charity listing/ranking API and return that information to the front end, as well as provide full endpoints for creating, maintaining and accessing information within the database.
 
 ## Endpoints
 
-_SWAGGER API INFO HERE?_
+https://auctionable-change-api.herokuapp.com/swagger
+
 
 ## Application Links
 
@@ -18,7 +19,6 @@ BE Production: https://auctionable-change-api.herokuapp.com/
 
 
 FE Repo: https://github.com/Auctionable-Change/auctionable_change  
-FE Production:
 
 ## Local Setup Instructions
 #### Python and Flask Setup
@@ -83,8 +83,8 @@ FE Production:
  ## Technologies and Frameworks
 
 - Back-End
-  - Language: Python
-  - Framework: Flask
+  - Language: Python 3.8.4
+  - Framework: Flask 1.1.2
   - Testing: Nose
   - Database: PostgreSQL
   - Database Interaction & ORM: SQLAlchemy
