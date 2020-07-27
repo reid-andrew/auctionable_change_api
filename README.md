@@ -4,11 +4,15 @@
 
 ## Endpoints
 
+## Tables
+![Screenshot](public/AC_tables_7-26-20.png)
+
 ## Production Site
+link: https://auctionable-change-api.herokuapp.com/
 
 ## Setup Instructions
 
 ## Dev Team BE
- - Stephanie Friend ([GitHub](https://github.com/StephanieFriend)), [LinkedIn](https://www.linkedin.com/in/s-friend/))
- - Kevin McGrevey ([GitHub](https://github.com/kmcgrevey)), [LinkedIn](www.linkedin.com/in/‎kevin-mcgrevey‎-8660958/))
- - Andrew Reid ([GitHub](https://github.com/reid-andrew)), [LinkedIn](https://www.linkedin.com/in/reida/))
+ - Stephanie Friend ([GitHub](https://github.com/StephanieFriend), [LinkedIn](https://www.linkedin.com/in/s-friend/))
+ - Kevin McGrevey ([GitHub](https://github.com/kmcgrevey), [LinkedIn](www.linkedin.com/in/‎kevin-mcgrevey‎-8660958/))
+ - Andrew Reid ([GitHub](https://github.com/reid-andrew), [LinkedIn](https://www.linkedin.com/in/reida/))
