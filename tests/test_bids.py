@@ -64,7 +64,7 @@ class TestUsers(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
-    def test_get_all_items(self):
+    def test_get_all_bids(self):
         response = self.test_app.get(
             '/bids',
             follow_redirects=True
@@ -78,7 +78,20 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['bids'][-1]['bidder_email'], 'elmo@example.com')
         self.assertEquals(payload['bids'][-1]['amount'], 400.00)
 
-    def test_create_items(self):
+    def test_get_one_bid(self):
+        response = self.test_app.get(
+            '/bids/2',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['id'], 2)
+        self.assertEquals(payload['bidder_email'], 'elmo@example.com')
+        self.assertEquals(payload['amount'], 400.00)
+        self.assertEquals(payload['city'], 'New York')  
+
+    def test_create_bids(self):
         response = self.test_app.post(
             '/bids',
             json={
