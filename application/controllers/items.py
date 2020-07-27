@@ -160,6 +160,8 @@ class ItemResources(Resource):
                 item.donor = request.json['donor']
             if 'donor_email' in request.json:
                 item.donor_email = request.json['donor_email']
+            if 'status' in request.json:
+                item.status = request.json['status']
             if 'category' in request.json:
                 item.category = request.json['category']
             if 'charity' in request.json:
