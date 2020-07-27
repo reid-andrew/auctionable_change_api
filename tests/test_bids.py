@@ -222,5 +222,13 @@ class TestUsers(unittest.TestCase):
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 1)
 
+    def test_sad_path_for_delete_item(self):
+        response = self.test_app.delete(
+            '/bids/11111',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
+
 if __name__ == "__main__":
     unittest.main()
