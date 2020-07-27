@@ -132,5 +132,34 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
+    def test_update_items(self):
+        response = self.test_app.put(
+            '/items/1',
+            json={
+                'description': 'Updated Item',
+                'donor': 'New Donor'
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['description'], 'Updated Item')
+        self.assertEquals(payload['donor'], 'New Donor')
+        self.assertEquals(payload['category'], 'furniture')
+        self.assertEquals(payload['charity'], 'Big Cat Rescue')
+
+        def test_update_items(self):
+            response = self.test_app.put(
+                '/items/1111',
+                json={
+                    'description': 'Updated Item',
+                    'donor': 'New Donor'
+                },
+                follow_redirects=True
+            )
+
+            self.assertEquals(response.status, "400 BAD REQUEST")
+            
 if __name__ == "__main__":
     unittest.main()
