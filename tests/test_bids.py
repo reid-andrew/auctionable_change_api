@@ -182,6 +182,17 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['zip_code'], '99999')
         self.assertEquals(payload['receipt'], 'www.death_or_glory.com')
 
+    def test_sad_path_for_update_bid(self):
+        response = self.test_app.put(
+            '/bids/1111',
+            json={
+                'bidder_name': 'Joe Strummer',
+                'bidder_email': 'clampdown@clash.com'
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
 
 if __name__ == "__main__":
     unittest.main()
