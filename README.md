@@ -10,7 +10,7 @@ This **API** functions to consume a charity listing/ranking API and return that 
 
 ## Endpoints
 
-Swagger API info here?
+_SWAGGER API INFO HERE?_
 
 ## Application Links
 
@@ -63,7 +63,7 @@ FE Production:
 
 #### Starting Flask Server
 
-- To run server on `http://0.0.0.0:5000/`:
+- To run server on `localhost:5000/`:
   ```
   python run.py
   ```
