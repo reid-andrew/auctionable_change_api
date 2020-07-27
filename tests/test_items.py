@@ -146,17 +146,53 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['category'], 'furniture')
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
-        def test_update_items(self):
-            response = self.test_app.put(
-                '/items/1111',
-                json={
-                    'description': 'Updated Item',
-                    'donor': 'New Donor'
-                },
-                follow_redirects=True
-            )
+    def test_sad_path_for_update_item(self):
+        response = self.test_app.put(
+            '/items/1111',
+            json={
+                'description': 'Updated Item',
+                'donor': 'New Donor'
+            },
+            follow_redirects=True
+        )
 
-            self.assertEquals(response.status, "400 BAD REQUEST")
+        self.assertEquals(response.status, "404 NOT FOUND")
+
+    def test_delete_item(self):
+        response = self.test_app.get(
+            '/items',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 2)
+
+        response = self.test_app.delete(
+            '/items/2',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['id'], 2)
+
+        response = self.test_app.get(
+            '/items',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 1)
+
+    def test_sad_path_for_delete_item(self):
+        response = self.test_app.delete(
+            '/items/11111',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
 
 if __name__ == "__main__":
     unittest.main()
