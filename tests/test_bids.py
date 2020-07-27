@@ -138,6 +138,25 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
+    def test_sad_path_for_create_bid_with_nonexistent_item(self):
+        response = self.test_app.post(
+            '/bids',
+            json={
+                'bidder_name': 'Hermione',
+                'bidder_email': 'granger@example.com',
+                'amount': 500.00,
+                'street_address': '5600 Hogwarts Way',
+                'city': 'Magic',
+                'state': 'Spells',
+                'zip_code': '09876',
+                'receipt': 'img.ul',
+                'item_id': 1111
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
+
     def test_update_bids_only_updates_selected_fields(self):
         response = self.test_app.put(
             '/bids/1',
