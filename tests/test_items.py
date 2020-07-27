@@ -110,25 +110,22 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
     def test_sad_path_for_create_item_with_missing_info(self):
-        try:
-            response = self.test_app.post(
-                '/items',
-                json={
-                    'description': '12 inch tablet from Samsung',
-                    'donor': 'Demo McDemoFace',
-                    'donor_email': "demomcdemoface@example.com",
-                    'id': 2,
-                    'price': 56.00,
-                    'category': 'electronics',
-                    'charity': 'Big Cat Rescue',
-                    'charity_url': "http://www.thisisatotallyligiturl.com",
-                    'charity_score': 4,
-                    'image': 'img.ul'
-                },
-                follow_redirects=True
-            )
-        except Exception as e:
-            return (str(e))
+        response = self.test_app.post(
+            '/items',
+            json={
+                'description': '12 inch tablet from Samsung',
+                'donor': 'Demo McDemoFace',
+                'donor_email': "demomcdemoface@example.com",
+                'id': 2,
+                'price': 56.00,
+                'category': 'electronics',
+                'charity': 'Big Cat Rescue',
+                'charity_url': "http://www.thisisatotallyligiturl.com",
+                'charity_score': 4,
+                'image': 'img.ul'
+            },
+            follow_redirects=True
+        )
 
         self.assertEquals(response.status, "400 BAD REQUEST")
 
@@ -160,6 +157,6 @@ class TestUsers(unittest.TestCase):
             )
 
             self.assertEquals(response.status, "400 BAD REQUEST")
-            
+
 if __name__ == "__main__":
     unittest.main()
