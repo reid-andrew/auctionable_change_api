@@ -17,7 +17,8 @@ def charity_objects(response):
         name = charity["charityName"]
         url = charity["charityNavigatorURL"]
         rating = charity["currentRating"]["rating"]
-        charity_list.append(Charity(id, name, url, rating))
+        rating_image = charity["currentRating"]["ratingImage"]["large"]
+        charity_list.append(Charity(id, name, url, rating, rating_image))
 
     return charity_list
 
