@@ -105,7 +105,6 @@ class TestUsers(unittest.TestCase):
             json={
                 'bidder_name': 'Hermione',
                 'bidder_email': 'granger@example.com',
-                'id': 2,
                 'amount': 500.00,
                 'street_address': '5600 Hogwarts Way',
                 'city': 'Magic',
@@ -122,6 +121,22 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['city'], 'Magic')
         self.assertEquals(payload['zip_code'], '09876')
 
+    def test_sad_path_for_create_bid_with_missing_info(self):
+        response = self.test_app.post(
+            '/bids',
+            json={
+                'amount': 500.00,
+                'street_address': '5600 Hogwarts Way',
+                'city': 'Magic',
+                'state': 'Spells',
+                'zip_code': '09876',
+                'receipt': 'img.ul',
+                'item_id': 1
+            },
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "400 BAD REQUEST")
 
 if __name__ == "__main__":
     unittest.main()
