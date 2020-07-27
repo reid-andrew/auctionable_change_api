@@ -62,7 +62,7 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['items'][-1]['donor'], 'Demo McDemoFace')
         self.assertEquals(payload['items'][-1]['price'], 40.00)
         self.assertEquals(payload['items'][-1]['status'], 'available')
-    
+
 
     def test_get_one_item(self):
         response = self.test_app.get(
@@ -75,7 +75,14 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['id'], 2)
         self.assertEquals(payload['title'], 'Rocking Chair')
         self.assertNotEqual(payload['title'], 'Antique Tea set')
-      
+
+    def test_sad_path_for_nonexistent_item(self):
+        response = self.test_app.get(
+            '/items/10',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
 
     def test_create_items(self):
         response = self.test_app.post(
@@ -102,7 +109,7 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['title'], 'Android Tablet')
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
-    def test_return_error_for_missing_title_post(self):
+    def test_sad_path_for_create_item_with_missing_info(self):
         try:
             response = self.test_app.post(
                 '/items',
@@ -124,15 +131,6 @@ class TestUsers(unittest.TestCase):
             return (str(e))
 
         self.assertEquals(response.status, "400 BAD REQUEST")
-
-    def test_error_for_nonexisting_item(self):
-        response = self.test_app.get(
-            '/items/10',
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "404 NOT FOUND")
-        
 
 if __name__ == "__main__":
     unittest.main()
