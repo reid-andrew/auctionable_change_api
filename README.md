@@ -1,14 +1,24 @@
 # Auctionable Change API [![Build Status](https://travis-ci.com/Auctionable-Change/auctionable_change_api.svg?branch=master)](https://travis-ci.com/Auctionable-Change/auctionable_change_api)
 
 ## Description
+**Auctionable Change API** is the backend API for our [Turing School of Software and Design](https://turing.io/) capstone project, **Auctionable Change**.
+
+The idea behind **A.Change** is creating a platform in which an individual can post an item for sale/auction, set a minimum asking price and then select a charity to which the funds from that item's sale would be donated.
+
+This **API** functions to consume a charity listing/ranking API and return that information to the front end, as well as provide full endpoints for creating, maintaining and accessing information within the database.
 
 ## Endpoints
+Swagger API info here?
 
 ## Tables
 ![Screenshot](public/AC_tables_7-26-20.png)
 
-## Production Site
-link: https://auctionable-change-api.herokuapp.com/
+## Application Links
+BE Production: https://auctionable-change-api.herokuapp.com/
+
+
+FE Repo: https://github.com/Auctionable-Change/auctionable_change  
+FE Production:
 
 ## Setup Instructions
 
