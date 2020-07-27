@@ -194,5 +194,33 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "404 NOT FOUND")
 
+    def test_delete_bid(self):
+        response = self.test_app.get(
+            '/bids',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 2)
+
+        response = self.test_app.delete(
+            '/bids/2',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['id'], 2)
+
+        response = self.test_app.get(
+            '/bids',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 1)
+
 if __name__ == "__main__":
     unittest.main()
