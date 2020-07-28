@@ -15,6 +15,7 @@ class Item(db.Model):
     charity = db.Column(db.String())
     charity_url = db.Column(db.String())
     charity_score = db.Column(db.Integer())
+    charity_score_image = db.Column(db.String())
     image = db.Column(db.String())
 
     bids = db.relationship('Bid', backref='items', lazy='select')

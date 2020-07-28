@@ -7,7 +7,8 @@ charity_fields = {
     'id': fields.Integer,
     'url': fields.String,
     'name': fields.String,
-    'rating': fields.Integer
+    'rating': fields.Integer,
+    'rating_image': fields.String
 }
 
 charity_list_fields = {
@@ -36,6 +37,12 @@ item_post_parser.add_argument(
 )
 item_post_parser.add_argument(
     'rating',
+    type=str,
+    required=False,
+    location=['json']
+)
+item_post_parser.add_argument(
+    'rating_image',
     type=str,
     required=False,
     location=['json']

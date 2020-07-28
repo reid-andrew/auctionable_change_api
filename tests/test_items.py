@@ -21,6 +21,7 @@ class TestUsers(unittest.TestCase):
             charity="Big Cat Rescue",
             charity_url="http://www.thisisatotallyligiturl.com",
             charity_score=4,
+            charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
             image="img.ul"
           )
         with self.app.app_context():
@@ -37,6 +38,7 @@ class TestUsers(unittest.TestCase):
           charity='Big Cat Rescue',
           charity_url="http://www.thisisatotallyligiturl.com",
           charity_score=4,
+          charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
           image='img.ul'
           )
         with self.app.app_context():
@@ -99,6 +101,8 @@ class TestUsers(unittest.TestCase):
                 'charity': 'Big Cat Rescue',
                 'charity_url': "http://www.thisisatotallyligiturl.com",
                 'charity_score': 4,
+                'charity_score_image': "img.url",
+                'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
                 'image': 'img.ul'
             },
             follow_redirects=True
@@ -122,6 +126,7 @@ class TestUsers(unittest.TestCase):
                 'charity': 'Big Cat Rescue',
                 'charity_url': "http://www.thisisatotallyligiturl.com",
                 'charity_score': 4,
+                'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
                 'image': 'img.ul'
             },
             follow_redirects=True
@@ -160,6 +165,7 @@ class TestUsers(unittest.TestCase):
                     'charity': 'New Charity',
                     'charity_url': 'www.newcharity.org',
                     'charity_score': 1,
+                    'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png",
                     'image': 'www.newimage.com'
                 },
                 follow_redirects=True
@@ -177,8 +183,9 @@ class TestUsers(unittest.TestCase):
             self.assertEquals(payload['charity'], 'New Charity')
             self.assertEquals(payload['charity_url'], 'www.newcharity.org')
             self.assertEquals(payload['charity_score'], 1)
+            self.assertEquals(payload['charity_score_image'], "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png")
             self.assertEquals(payload['image'], 'www.newimage.com')
-          
+
     def test_sad_path_for_update_item(self):
         response = self.test_app.put(
             '/items/1111',

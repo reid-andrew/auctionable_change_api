@@ -16,6 +16,7 @@ item_fields = {
     'charity': fields.String,
     'charity_url': fields.String,
     'charity_score': fields.Integer,
+    'charity_score_image': fields.String,
     'image': fields.String,
     'bids': fields.List(
         fields.Nested(
@@ -111,6 +112,13 @@ item_post_parser.add_argument(
     help='charity_score parameter is required'
 )
 item_post_parser.add_argument(
+    'charity_score_image',
+    type=str,
+    required=True,
+    location=['json'],
+    help='charity_score_image parameter is required'
+)
+item_post_parser.add_argument(
     'image',
     type=str,
     required=True,
@@ -172,6 +180,8 @@ class ItemResources(Resource):
                 item.charity_url = request.json['charity_url']
             if 'charity_score' in request.json:
                 item.charity_score = request.json['charity_score']
+            if 'charity_score_image' in request.json:
+                item.charity_score = request.json['charity_score_image']
             if 'image' in request.json:
                 item.image = request.json['image']
 
