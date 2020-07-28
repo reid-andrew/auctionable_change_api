@@ -39,5 +39,6 @@ class TestCharities(unittest.TestCase):
         self.assertEquals(payload['charities'][0]['id'], 261594574)
         self.assertEquals(payload['charities'][1]['name'], 'Restavek Freedom')
 
+
 if __name__ == "__main__":
     unittest.main()

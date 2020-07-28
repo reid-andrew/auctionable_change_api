@@ -25,5 +25,6 @@ class TestWelcome(unittest.TestCase):
         payload = json.loads(response.data)
         self.assertEquals(payload, {'welcome': None})
 
+
 if __name__ == "__main__":
     unittest.main()

@@ -65,7 +65,6 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['items'][-1]['price'], 40.00)
         self.assertEquals(payload['items'][-1]['status'], 'available')
 
-
     def test_get_one_item(self):
         response = self.test_app.get(
             '/items/2',
@@ -101,7 +100,6 @@ class TestUsers(unittest.TestCase):
                 'charity': 'Big Cat Rescue',
                 'charity_url': "http://www.thisisatotallyligiturl.com",
                 'charity_score': 4,
-                'charity_score_image': "img.url",
                 'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
                 'image': 'img.ul'
             },
@@ -151,40 +149,40 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['category'], 'furniture')
         self.assertEquals(payload['charity'], 'Big Cat Rescue')
 
-        def test_update_can_update_all_fields(self):
-            response = self.test_app.put(
-                '/items/1',
-                json={
-                    'title': 'Updated Title',
-                    'description': 'Updated Item',
-                    'price': 9999.99,
-                    'donor': 'New Donor',
-                    'donor_email': 'new@donor.email',
-                    'status': 'unavailable',
-                    'category': 'New Category',
-                    'charity': 'New Charity',
-                    'charity_url': 'www.newcharity.org',
-                    'charity_score': 1,
-                    'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png",
-                    'image': 'www.newimage.com'
-                },
-                follow_redirects=True
-            )
+    def test_update_can_update_all_fields(self):
+        response = self.test_app.put(
+            '/items/1',
+            json={
+                'title': 'Updated Title',
+                'description': 'Updated Item',
+                'price': 9999.99,
+                'donor': 'New Donor',
+                'donor_email': 'new@donor.email',
+                'status': 'unavailable',
+                'category': 'New Category',
+                'charity': 'New Charity',
+                'charity_url': 'www.newcharity.org',
+                'charity_score': 1,
+                'charity_score_image': "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png",
+                'image': 'www.newimage.com'
+            },
+            follow_redirects=True
+        )
 
-            self.assertEquals(response.status, "200 OK")
-            payload = json.loads(response.data)
-            self.assertEquals(payload['title'], 'Updated Title')
-            self.assertEquals(payload['description'], 'Updated Item')
-            self.assertEquals(payload['price'], 9999.99)
-            self.assertEquals(payload['donor'], 'New Donor')
-            self.assertEquals(payload['donor_email'], 'new@donor.email')
-            self.assertEquals(payload['status'], 'unavailable')
-            self.assertEquals(payload['category'], 'New Category')
-            self.assertEquals(payload['charity'], 'New Charity')
-            self.assertEquals(payload['charity_url'], 'www.newcharity.org')
-            self.assertEquals(payload['charity_score'], 1)
-            self.assertEquals(payload['charity_score_image'], "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png")
-            self.assertEquals(payload['image'], 'www.newimage.com')
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['title'], 'Updated Title')
+        self.assertEquals(payload['description'], 'Updated Item')
+        self.assertEquals(payload['price'], 9999.99)
+        self.assertEquals(payload['donor'], 'New Donor')
+        self.assertEquals(payload['donor_email'], 'new@donor.email')
+        self.assertEquals(payload['status'], 'unavailable')
+        self.assertEquals(payload['category'], 'New Category')
+        self.assertEquals(payload['charity'], 'New Charity')
+        self.assertEquals(payload['charity_url'], 'www.newcharity.org')
+        self.assertEquals(payload['charity_score'], 1)
+        self.assertEquals(payload['charity_score_image'], "https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png")
+        self.assertEquals(payload['image'], 'www.newimage.com')
 
     def test_sad_path_for_update_item(self):
         response = self.test_app.put(
@@ -233,6 +231,7 @@ class TestUsers(unittest.TestCase):
         )
 
         self.assertEquals(response.status, "404 NOT FOUND")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -4,10 +4,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+
 def return_charities(search_term):
     charities = charity_objects(charity_list(search_term))
 
     return charities
+
 
 def charity_objects(response):
     parsed = response.json()
@@ -21,6 +23,7 @@ def charity_objects(response):
         charity_list.append(Charity(id, name, url, rating, rating_image))
 
     return charity_list
+
 
 def charity_list(search_term):
     payload = {
