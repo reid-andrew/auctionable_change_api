@@ -92,6 +92,7 @@ class TestUsers(unittest.TestCase):
                 'charity': 'Big Cat Rescue',
                 'charity_url': "http://www.thisisatotallyligiturl.com",
                 'charity_score': 4,
+                'charity_score_image': "img.url",
                 'image': 'img.ul'
             },
             follow_redirects=True
