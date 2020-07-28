@@ -249,5 +249,6 @@ class TestUsers(unittest.TestCase):
 
         self.assertEquals(response.status, "404 NOT FOUND")
 
+
 if __name__ == "__main__":
     unittest.main()
