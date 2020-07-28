@@ -179,7 +179,7 @@ class ItemResources(Resource):
             if 'charity_score' in request.json:
                 item.charity_score = request.json['charity_score']
             if 'charity_score_image' in request.json:
-                item.charity_score = request.json['charity_score_image']
+                item.charity_score_image = request.json['charity_score_image']
             if 'image' in request.json:
                 item.image = request.json['image']
 
