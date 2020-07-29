@@ -54,9 +54,16 @@ paths:
                 $ref: '#/components/schemas/Item'
         '400':
           description: Bad Request
-  /items/<id>:
+  /items/{item_id}:
     get:
       summary: Returns a selected item.
+      parameters:
+        - in: path
+          name: item_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to get
       tags:
         - Items
       responses:
@@ -70,6 +77,13 @@ paths:
           description: Item not found
     put:
       summary: Updates a selected item.
+      parameters:
+        - in: path
+          name: item_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to update
       tags:
         - Items
       requestBody:
@@ -89,6 +103,13 @@ paths:
           description: Item not found
     delete:
       summary: Removes an item.
+      parameters:
+        - in: path
+          name: item_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the item to delete
       tags:
         - Items
       responses:
@@ -131,9 +152,16 @@ paths:
                   $ref: '#/components/schemas/Bid'
           '400':
             description: Bad Request
-  /bids/<id>:
+  /bids/{bid_id}:
     get:
       summary: Returns a selected bids.
+      parameters:
+        - in: path
+          name: bid_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid to get
       tags:
         - Bids
       responses:
@@ -147,6 +175,13 @@ paths:
           description: Bid not found
     put:
       summary: Updates a selected bids.
+      parameters:
+        - in: path
+          name: bid_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid to update
       tags:
         - Bids
       requestBody:
@@ -166,6 +201,13 @@ paths:
           description: Bid not found
     delete:
       summary: Removes an bid.
+      parameters:
+        - in: path
+          name: bid_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid to delete
       tags:
         - Bids
       responses:
@@ -190,9 +232,16 @@ paths:
 
         '400':
           description: Bad Request
-  /charities/<search_term>:
+  /charities/{search_term}:
     get:
       summary: Searches for charities which match search term.
+      parameters:
+        - in: path
+          name: search_term
+          schema:
+            type: string
+          required: true
+          description: String for which you wish to search
       tags:
         - Charity
       responses:
