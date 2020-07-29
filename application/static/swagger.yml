@@ -103,10 +103,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ItemRequest'
+              $ref: '#/components/schemas/Item'
             examples:
               Item:
-                $ref: '#/components/examples/ItemRequest'
+                $ref: '#/components/examples/Item'
       responses:
         '200':    # status code
           content:
@@ -337,6 +337,10 @@ components:
           type: string
         image:
           type: string
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
     ItemRequest:
       type: object
       properties:
@@ -457,6 +461,7 @@ components:
           charity_score: 4
           charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
           image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+          bids: []
         - id: 2
           title: Album
           description: The Clash London Calling
@@ -469,6 +474,17 @@ components:
           charity_score: 3
           charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png
           image: https://img.discogs.com/HWBBtcFnGxd7ZOoN3wskQ8kh7ro=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-470912-1248752385.jpeg.jpg
+          bids:
+          - id: 2
+            bidder_name: Johnny McBuyingstuff
+            bidder_email: jmb@example.com
+            amount: 99.99
+            street_address: 123 Main St.
+            city: Coshocton
+            state: OH
+            zip_code: 43812
+            receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
+            item_id: 1
     Item:
       value:
         id: 1
@@ -483,6 +499,7 @@ components:
         charity_score: 4
         charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
         image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+        bids: []
       summary: Sample item object
     ItemRequest:
       value:
