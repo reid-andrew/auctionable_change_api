@@ -138,6 +138,8 @@ paths:
               examples:
                 Item:
                   $ref: '#/components/examples/Item'
+        '403':
+          description: Cannot delete item with associated bids
         '404':
           description: Item not found
   /bids:
