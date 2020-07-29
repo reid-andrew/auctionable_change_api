@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
+from flask_cors import CORS
 from application.config import app_config
 from flask_swagger_ui import get_swaggerui_blueprint
 import application.static
@@ -10,6 +11,7 @@ db = SQLAlchemy()
 
 def create_app(config_name):
     app = Flask(__name__)
+    CORS(app)
 
     SWAGGER_URL = '/swagger'
     API_URL = '/static/swagger.yml'
@@ -28,6 +30,7 @@ def create_app(config_name):
     db.init_app(app)
 
     api = Api(app)
+    CORS(api)
 
     from application.models.item import Item
     from application.models.bid import Bid
