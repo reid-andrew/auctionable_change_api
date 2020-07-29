@@ -33,6 +33,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Item'
 
         '400':
           description: Bad Request
@@ -46,12 +49,18 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ItemRequest'
+            examples:
+              ItemRequest:
+                $ref: '#/components/examples/ItemRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Item'
         '400':
           description: Bad Request
   /items/{item_id}:
@@ -72,6 +81,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Item'
 
         '404':
           description: Item not found
@@ -92,13 +104,18 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ItemRequest'
+            examples:
+              Item:
+                $ref: '#/components/examples/ItemRequest'
       responses:
         '200':    # status code
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
-
+            examples:
+              Item:
+                $ref: '#/components/examples/Item'
         '404':
           description: Item not found
     delete:
@@ -118,6 +135,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Item'
         '404':
           description: Item not found
   /bids:
@@ -131,7 +151,9 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Bid'
-
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/Bid'
           '400':
             description: Bad Request
       post:
@@ -144,12 +166,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BidRequest'
+              examples:
+                BidRequest:
+                  $ref: '#/components/examples/BidRequest'
         responses:
           '200':
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Bid'
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/Bid'
           '400':
             description: Bad Request
   /bids/{bid_id}:
@@ -170,7 +198,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bid'
-
+              examples:
+                Bid:
+                  $ref: '#/components/examples/Bid'
         '404':
           description: Bid not found
     put:
@@ -190,13 +220,18 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/BidRequest'
+            examples:
+              BidRequest:
+                $ref: '#/components/examples/BidRequest'
       responses:
         '200':    # status code
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bid'
-
+              examples:
+                Bid:
+                  $ref: '#/components/examples/Bid'
         '404':
           description: Bid not found
     delete:
@@ -216,6 +251,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bid'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/Bid'
         '404':
           description: Bid not found
   /charities:
@@ -229,7 +267,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Charity'
-
+              examples:
+                Bid:
+                  $ref: '#/components/examples/Charities'
         '400':
           description: Bad Request
   /charities/{search_term}:
@@ -249,8 +289,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Charity'
-
+                $ref: '#/components/schemas/Charities'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/Charities'
         '400':
           description: Bad Request
 components:
@@ -332,18 +374,80 @@ components:
           type: integer
         rating_image:
           type: string
-    # examples:
-    #   itemExample:
-    #     value:
-    #       title: Photo
-    #       description: Image of Johnny Cash
-    #       price: 49.99
-    #       donor: Andrew Reid
-    #       donor_email: areid@example.com
-    #       category: home
-    #       charity: ProPublcia
-    #       charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
-    #       charity_score: 4
-    #       charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
-    #       image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
-    #     summary: Sample item object
+    Charities:
+      properties:
+        count:
+          type: integer
+        charities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Charity'
+  examples:
+    Item:
+      value:
+        id: 1
+        title: Photo
+        description: Image of Johnny Cash
+        price: 49.99
+        donor: Andrew Reid
+        donor_email: areid@example.com
+        category: home
+        charity: ProPublcia
+        charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
+        charity_score: 4
+        charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+        image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+      summary: Sample item object
+    ItemRequest:
+      value:
+        title: Photo
+        description: Image of Johnny Cash
+        price: 49.99
+        donor: Andrew Reid
+        donor_email: areid@example.com
+        category: home
+        charity: ProPublcia
+        charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
+        charity_score: 4
+        charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+        image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+      summary: Sample item object
+    Bid:
+      value:
+        id: 1
+        bidder_name: Johnny McBuyingstuff
+        bidder_email: jmb@example.com
+        amount: 99.99
+        street_address: 123 Main St.
+        city: Coshocton
+        state: OH
+        zip_code: 43812
+        receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
+        item_id: 1
+      summary: Sample bid object
+    BidRequest:
+      value:
+        bidder_name: Johnny McBuyingstuff
+        bidder_email: jmb@example.com
+        amount: 99.99
+        street_address: 123 Main St.
+        city: Coshocton
+        state: OH
+        zip_code: 43812
+        receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
+        item_id: 1
+      summary: Sample bid object
+    Charities:
+      value:
+        count: 2
+        charities:
+        - id: 593330495
+          url: https://www.charitynavigator.org/?bay=search.summary&orgid=8804&utm_source=DataAPI&utm_content=6bc9f3c8
+          name: "Big Cat Rescue"
+          rating: 4
+          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+        - id: 911726410
+          url: https://www.charitynavigator.org/?bay=search.summary&orgid=18675&utm_source=DataAPI&utm_content=6bc9f3c8
+          name: "Whatcom Community Foundation"
+          rating: 4
+          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
