@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item_create'
+              $ref: '#/components/schemas/Item'
       responses:
         '200':
           content:
@@ -91,7 +91,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item_create'
+              $ref: '#/components/schemas/Item'
       responses:
         '200':    # status code
           content:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bid_create'
+                $ref: '#/components/schemas/Bid'
         responses:
           '200':
             content:
@@ -189,7 +189,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Bid_create'
+              $ref: '#/components/schemas/Bid'
       responses:
         '200':    # status code
           content:
@@ -228,7 +228,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/Charity'
 
         '400':
           description: Bad Request
@@ -249,7 +249,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/Charity'
 
         '400':
           description: Bad Request
@@ -269,6 +269,8 @@ components:
           format: float
         donor:
           type: string
+        donor_email:
+          type: string
         status:
           type: string
         category:
@@ -279,27 +281,7 @@ components:
           type: string
         charity_score:
           type: string
-        image:
-          type: string
-    Item*:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        price:
-          type: number
-          format: float
-        donor:
-          type: string
-        category:
-          type: string
-        charity:
-          type: string
-        charity_url:
-          type: string
-        charity_score:
+        charity_score_image:
           type: string
         image:
           type: string
@@ -307,8 +289,6 @@ components:
       type: object
       properties:
         id:
-          type: integer
-        item_id:
           type: integer
         bidder_name:
           type: string
@@ -327,6 +307,8 @@ components:
           type: string
         receipt:
           type: string
+        item_id:
+          type: integer
     Charity:
       type: object
       properties:
@@ -338,3 +320,5 @@ components:
           type: string
         rating:
           type: integer
+        rating_image:
+          type: string
