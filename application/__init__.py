@@ -19,7 +19,8 @@ def create_app(config_name):
         SWAGGER_URL,
         API_URL,
         config={
-            'app_name': "auctionable_change_api"
+            'app_name': "auctionable_change_api",
+            'defaultModelsExpandDepth': -1
         }
     )
     app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
