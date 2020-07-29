@@ -30,7 +30,6 @@ def create_app(config_name):
     db.init_app(app)
 
     api = Api(app)
-    CORS(api)
 
     from application.models.item import Item
     from application.models.bid import Bid
