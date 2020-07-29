@@ -191,6 +191,8 @@ class ItemResources(Resource):
         item = Item.query.get(item_id)
         if not item:
             abort(404, description='That item does not exist')
+        elif not item.bids == []:
+            abort(403, description='Cannot delete item with associated bids')
         else:
             db.session.delete(item)
             db.session.commit()
