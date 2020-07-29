@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: '#/components/schemas/ItemRequest'
       responses:
         '200':
           content:
@@ -91,7 +91,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: '#/components/schemas/ItemRequest'
       responses:
         '200':    # status code
           content:
@@ -143,7 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bid'
+                $ref: '#/components/schemas/BidRequest'
         responses:
           '200':
             content:
@@ -189,7 +189,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Bid'
+              $ref: '#/components/schemas/BidRequest'
       responses:
         '200':    # status code
           content:
@@ -256,10 +256,15 @@ paths:
 components:
   schemas:
     Item:
+      allOf:
+        - $ref: '#/components/schemas/ItemRequest'
+        - type: object
+          properties:
+            id:
+              type: integer
+    ItemRequest:
       type: object
       properties:
-        id:
-          type: integer
         title:
           type: string
         description:
@@ -286,10 +291,15 @@ components:
         image:
           type: string
     Bid:
+      allOf:
+        - $ref: '#/components/schemas/BidRequest'
+        - type: object
+          properties:
+            id:
+              type: integer
+    BidRequest:
       type: object
       properties:
-        id:
-          type: integer
         bidder_name:
           type: string
         bidder_email:
@@ -322,3 +332,18 @@ components:
           type: integer
         rating_image:
           type: string
+    # examples:
+    #   itemExample:
+    #     value:
+    #       title: Photo
+    #       description: Image of Johnny Cash
+    #       price: 49.99
+    #       donor: Andrew Reid
+    #       donor_email: areid@example.com
+    #       category: home
+    #       charity: ProPublcia
+    #       charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
+    #       charity_score: 4
+    #       charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+    #       image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+    #     summary: Sample item object
