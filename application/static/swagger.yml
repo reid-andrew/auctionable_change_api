@@ -32,10 +32,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/Items'
               examples:
                 Item:
-                  $ref: '#/components/examples/Item'
+                  $ref: '#/components/examples/Items'
 
         '400':
           description: Bad Request
@@ -150,10 +150,10 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/Bid'
+                  $ref: '#/components/schemas/Bids'
                 examples:
                   Bid:
-                    $ref: '#/components/examples/Bid'
+                    $ref: '#/components/examples/Bids'
           '400':
             description: Bad Request
       post:
@@ -297,13 +297,44 @@ paths:
           description: Bad Request
 components:
   schemas:
+    Items:
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
     Item:
-      allOf:
-        - $ref: '#/components/schemas/ItemRequest'
-        - type: object
-          properties:
-            id:
-              type: integer
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        donor:
+          type: string
+        donor_email:
+          type: string
+        status:
+          type: string
+        category:
+          type: string
+        charity:
+          type: string
+        charity_url:
+          type: string
+        charity_score:
+          type: string
+        charity_score_image:
+          type: string
+        image:
+          type: string
     ItemRequest:
       type: object
       properties:
@@ -332,16 +363,21 @@ components:
           type: string
         image:
           type: string
+    Bids:
+      properties:
+        count:
+          type: integer
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
     Bid:
-      allOf:
-        - $ref: '#/components/schemas/BidRequest'
-        - type: object
-          properties:
-            id:
-              type: integer
-    BidRequest:
       type: object
       properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
         bidder_name:
           type: string
         bidder_email:
@@ -359,8 +395,28 @@ components:
           type: string
         receipt:
           type: string
+    BidRequest:
+      type: object
+      properties:
         item_id:
           type: integer
+        bidder_name:
+          type: string
+        bidder_email:
+          type: string
+        amount:
+          type: number
+          format: float
+        street_address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        receipt:
+          type: string
     Charity:
       type: object
       properties:
@@ -383,6 +439,34 @@ components:
           items:
             $ref: '#/components/schemas/Charity'
   examples:
+    Items:
+      value:
+        count: 2
+        items:
+        - id: 1
+          title: Photo
+          description: Image of Johnny Cash
+          price: 49.99
+          donor: Andrew Reid
+          donor_email: areid@example.com
+          category: home
+          charity: ProPublcia
+          charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
+          charity_score: 4
+          charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+          image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+        - id: 2
+          title: Album
+          description: The Clash London Calling
+          price: 10.00
+          donor: Joe Strummer
+          donor_email: joestrummer@example.com
+          category: home
+          charity: Center for People in Need
+          charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=12688&utm_source=DataAPI&utm_content=6bc9f3c8
+          charity_score: 3
+          charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png
+          image: https://img.discogs.com/HWBBtcFnGxd7ZOoN3wskQ8kh7ro=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-470912-1248752385.jpeg.jpg
     Item:
       value:
         id: 1
@@ -412,6 +496,30 @@ components:
         charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
         image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
       summary: Sample item object
+    Bids:
+      value:
+        count: 2
+        bids:
+        - id: 1
+          bidder_name: Johnny McBuyingstuff
+          bidder_email: jmb@example.com
+          amount: 99.99
+          street_address: 123 Main St.
+          city: Coshocton
+          state: OH
+          zip_code: 43812
+          receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
+          item_id: 1
+        - id: 2
+          bidder_name: Sally Simpson
+          bidder_email: sally@example.com
+          amount: 55.55
+          street_address: 456 Main St.
+          city: Coshocton
+          state: OH
+          zip_code: 43812
+          receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
+          item_id: 2
     Bid:
       value:
         id: 1
