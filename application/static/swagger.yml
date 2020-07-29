@@ -260,7 +260,7 @@ paths:
     get:
       summary: Returns a list of rated charities from Charity Navigator.
       tags:
-        - Charity
+        - Charities
       responses:
         '200':    # status code
           content:
@@ -283,7 +283,7 @@ paths:
           required: true
           description: String for which you wish to search
       tags:
-        - Charity
+        - Charities
       responses:
         '200':    # status code
           content:
