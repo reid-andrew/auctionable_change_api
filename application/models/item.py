@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from application import db
 
 
@@ -16,7 +18,7 @@ class Item(db.Model):
     charity_url = db.Column(db.String())
     charity_score = db.Column(db.Integer())
     image = db.Column(db.String())
-    bidding_time = db.Column(db.Float(), default=7)
+    bidding_time = db.Column(db.Integer(), default=datetime.now() + timedelta(days=7))
 
     bids = db.relationship('Bid', backref='items', lazy='select')
 

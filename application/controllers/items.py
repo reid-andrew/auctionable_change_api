@@ -17,7 +17,7 @@ item_fields = {
     'charity_url': fields.String,
     'charity_score': fields.Integer,
     'image': fields.String,
-    'bidding_time': fields.Float,
+    'bidding_time': fields.Integer,
     'bids': fields.List(
         fields.Nested(
             {
@@ -115,7 +115,7 @@ item_post_parser.add_argument(
 )
 item_post_parser.add_argument(
     'bidding_time',
-    type=str,
+    type=int,
     required=False,
     location=['json']
 )
