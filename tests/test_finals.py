@@ -1,7 +1,7 @@
 import unittest
 import json
 from application import create_app, db
-from application.models.final import Final
+from application.models.bid_detail import Final
 
 
 class TestUsers(unittest.TestCase):

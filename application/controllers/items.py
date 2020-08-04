@@ -3,32 +3,35 @@ from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.item import Item
+from application.models.user import User
+from datetime import datetime
 
 item_fields = {
     'id': fields.Integer,
+    'user_id': fields.Integer,
     'title': fields.String,
     'description': fields.String,
     'price': fields.Float,
-    'donor': fields.String,
-    'donor_email': fields.String,
     'status': fields.String,
     'category': fields.String,
     'charity': fields.String,
     'charity_url': fields.String,
     'charity_score': fields.Integer,
     'image': fields.String,
-    'bidding_time': fields.Integer,
+    'auction_length': fields.Integer,
+    'created_at': fields.DateTime,
+    'auction_end': fields.DateTime,
     'bids': fields.List(
         fields.Nested(
             {
                 'id': fields.Integer,
                 'item_id': fields.Integer,
-                'bidder_name': fields.String,
-                'bidder_email': fields.String,
-                'amount': fields.Float
+                'amount': fields.Float,
+                'winner': fields.Boolean,
+                'created_at': fields.DateTime,
             }
         )
-    ),
+    )
 }
 
 item_list_fields = {
@@ -37,6 +40,13 @@ item_list_fields = {
 }
 
 item_post_parser = reqparse.RequestParser()
+item_post_parser.add_argument(
+    'user_id',
+    type=int,
+    required=True,
+    location=['json'],
+    help='user_id parameter is required'
+)
 item_post_parser.add_argument(
     'title',
     type=str,
@@ -57,20 +67,6 @@ item_post_parser.add_argument(
     required=True,
     location=['json'],
     help='price parameter is required'
-)
-item_post_parser.add_argument(
-    'donor',
-    type=str,
-    required=True,
-    location=['json'],
-    help='donor parameter is required'
-)
-item_post_parser.add_argument(
-    'donor_email',
-    type=str,
-    required=True,
-    location=['json'],
-    help='donor parameter is required'
 )
 item_post_parser.add_argument(
     'status',
@@ -114,8 +110,20 @@ item_post_parser.add_argument(
     help='image parameter is required'
 )
 item_post_parser.add_argument(
-    'bidding_time',
+    'auction_length',
     type=int,
+    required=False,
+    location=['json']
+)
+item_post_parser.add_argument(
+    'created_at',
+    type=datetime,
+    required=False,
+    location=['json']
+)
+item_post_parser.add_argument(
+    'auction_end',
+    type=datetime,
     required=False,
     location=['json']
 )
@@ -140,9 +148,13 @@ class ItemResources(Resource):
     def post(self):
         args = item_post_parser.parse_args()
 
-        item = Item(**args)
-        db.session.add(item)
-        db.session.commit()
+        user = User.query.filter_by(id=args["user_id"]).first()
+        if not user:
+            abort(404, description='That user does not exist')
+        else:
+            item = Item(**args)
+            db.session.add(item)
+            db.session.commit()
 
         return item
 
@@ -158,10 +170,6 @@ class ItemResources(Resource):
                 item.description = request.json['description']
             if 'price' in request.json:
                 item.price = request.json['price']
-            if 'donor' in request.json:
-                item.donor = request.json['donor']
-            if 'donor_email' in request.json:
-                item.donor_email = request.json['donor_email']
             if 'category' in request.json:
                 item.category = request.json['category']
             if 'charity' in request.json:
@@ -172,9 +180,10 @@ class ItemResources(Resource):
                 item.charity_score = request.json['charity_score']
             if 'image' in request.json:
                 item.image = request.json['image']
-            if 'bidding_time' in request.json:
-                item.bidding_time = request.json['bidding_time']
-
+            if 'auction_length' in request.json:
+                item.auction_length = request.json['auction_length']
+            if 'auction_end' in request.json:
+                item.auction_end = request.json['auction_end']
             db.session.commit()
             return item
 
