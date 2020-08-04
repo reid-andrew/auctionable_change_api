@@ -18,6 +18,7 @@ item_fields = {
     'charity_score': fields.Integer,
     'charity_score_image': fields.String,
     'image': fields.String,
+    'bidding_time': fields.Integer,
     'bids': fields.List(
         fields.Nested(
             {
@@ -25,12 +26,7 @@ item_fields = {
                 'item_id': fields.Integer,
                 'bidder_name': fields.String,
                 'bidder_email': fields.String,
-                'amount': fields.Float,
-                'street_address': fields.String,
-                'city': fields.String,
-                'state': fields.String,
-                'zip_code': fields.String,
-                'receipt': fields.String
+                'amount': fields.Float
             }
         )
     ),
@@ -125,6 +121,12 @@ item_post_parser.add_argument(
     location=['json'],
     help='image parameter is required'
 )
+item_post_parser.add_argument(
+    'bidding_time',
+    type=int,
+    required=False,
+    location=['json']
+)
 
 
 class ItemResources(Resource):
@@ -182,6 +184,8 @@ class ItemResources(Resource):
                 item.charity_score_image = request.json['charity_score_image']
             if 'image' in request.json:
                 item.image = request.json['image']
+            if 'bidding_time' in request.json:
+                item.bidding_time = request.json['bidding_time']
 
             db.session.commit()
             return item

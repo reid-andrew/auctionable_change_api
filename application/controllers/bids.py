@@ -10,12 +10,7 @@ bid_fields = {
     'item_id': fields.Integer,
     'bidder_name': fields.String,
     'bidder_email': fields.String,
-    'amount': fields.Float,
-    'street_address': fields.String,
-    'city': fields.String,
-    'state': fields.String,
-    'zip_code': fields.String,
-    'receipt': fields.String
+    'amount': fields.Float
 }
 
 bid_list_fields = {
@@ -51,41 +46,6 @@ bid_post_parser.add_argument(
     required=True,
     location=['json'],
     help='amount parameter is required'
-)
-bid_post_parser.add_argument(
-    'street_address',
-    type=str,
-    required=True,
-    location=['json'],
-    help='street_address parameter is required'
-)
-bid_post_parser.add_argument(
-    'city',
-    type=str,
-    required=True,
-    location=['json'],
-    help='city parameter is required'
-)
-bid_post_parser.add_argument(
-    'state',
-    type=str,
-    required=True,
-    location=['json'],
-    help='state parameter is required'
-)
-bid_post_parser.add_argument(
-    'zip_code',
-    type=str,
-    required=True,
-    location=['json'],
-    help='zip_code parameter is required'
-)
-bid_post_parser.add_argument(
-    'receipt',
-    type=str,
-    required=True,
-    location=['json'],
-    help='receipt parameter is required'
 )
 
 
@@ -130,16 +90,6 @@ class BidResources(Resource):
                 bid.bidder_email = request.json['bidder_email']
             if 'amount' in request.json:
                 bid.amount = request.json['amount']
-            if 'street_address' in request.json:
-                bid.street_address = request.json['street_address']
-            if 'city' in request.json:
-                bid.city = request.json['city']
-            if 'state' in request.json:
-                bid.state = request.json['state']
-            if 'zip_code' in request.json:
-                bid.zip_code = request.json['zip_code']
-            if 'receipt' in request.json:
-                bid.receipt = request.json['receipt']
 
             db.session.commit()
             return bid
