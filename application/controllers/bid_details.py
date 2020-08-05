@@ -72,7 +72,6 @@ bid_detail_post_parser.add_argument(
     location=['json']
 )
 
-
 class BidDetailResources(Resource):
     def get(self, bid_detail_id=None):
         if bid_detail_id:
