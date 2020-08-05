@@ -4,13 +4,16 @@ from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid import Bid
 from application.models.item import Item
+from application.models.user import User
+from datetime import datetime
 
 bid_fields = {
     'id': fields.Integer,
     'item_id': fields.Integer,
-    'bidder_name': fields.String,
-    'bidder_email': fields.String,
-    'amount': fields.Float
+    'user_id': fields.Integer,
+    'amount': fields.Float,
+    'winner': fields.Boolean,
+    'created_at': fields.DateTime,
 }
 
 bid_list_fields = {
@@ -27,18 +30,11 @@ bid_post_parser.add_argument(
     help='item_id parameter is required'
 )
 bid_post_parser.add_argument(
-    'bidder_name',
-    type=str,
+    'user_id',
+    type=int,
     required=True,
     location=['json'],
-    help='bidder_name parameter is required'
-)
-bid_post_parser.add_argument(
-    'bidder_email',
-    type=str,
-    required=True,
-    location=['json'],
-    help='bidder_email parameter is required'
+    help='user_id parameter is required'
 )
 bid_post_parser.add_argument(
     'amount',
@@ -46,6 +42,18 @@ bid_post_parser.add_argument(
     required=True,
     location=['json'],
     help='amount parameter is required'
+)
+bid_post_parser.add_argument(
+    'winner',
+    type=bool,
+    required=False,
+    location=['json']
+)
+bid_post_parser.add_argument(
+    'created_at',
+    type=datetime,
+    required=False,
+    location=['json']
 )
 
 
@@ -69,8 +77,9 @@ class BidResources(Resource):
         args = bid_post_parser.parse_args()
 
         item = Item.query.filter_by(id=args["item_id"]).first()
-        if not item:
-            abort(404, description='That item does not exist')
+        user = User.query.filter_by(id=args["user_id"]).first()
+        if not item or user:
+            abort(404, description='That item or user does not exist')
         else:
             bid = Bid(**args)
             db.session.add(bid)
@@ -84,12 +93,10 @@ class BidResources(Resource):
         if not bid:
             abort(404, description='That bid does not exist')
         else:
-            if 'bidder_name' in request.json:
-                bid.bidder_name = request.json['bidder_name']
-            if 'bidder_email' in request.json:
-                bid.bidder_email = request.json['bidder_email']
             if 'amount' in request.json:
                 bid.amount = request.json['amount']
+            if 'winner' in request.json:
+                bid.winner = request.json['winner']
 
             db.session.commit()
             return bid
