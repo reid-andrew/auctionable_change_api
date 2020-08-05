@@ -20,8 +20,8 @@ item_fields = {
     'charity_score_image': fields.String,
     'image': fields.String,
     'auction_length': fields.Integer,
-    'created_at': fields.DateTime,
-    'auction_end': fields.DateTime,
+    'created_at': fields.String,
+    'auction_end': fields.String,
     'bids': fields.List(
         fields.Nested(
             {
