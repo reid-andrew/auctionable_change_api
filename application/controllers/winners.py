@@ -143,7 +143,7 @@ class WinnerResources(Resource):
         current_time = datetime.utcnow()
         high_bid = 0.0
         pending_winner = None
-        available_items = Item.query.filter(Item.status=='available', Item.auction_end<=current_time).all()
+        available_items = Item.query.filter(Item.status=='available', Item.auction_end<=current_time, Item.bids!=None).all()
         if not available_items:
             abort(404, description='No pending winners')
         else:
