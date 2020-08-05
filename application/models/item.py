@@ -17,9 +17,9 @@ class Item(db.Model):
     charity_score = db.Column(db.Integer())
     charity_score_image = db.Column(db.String())
     image = db.Column(db.String())
-    auction_length = db.Column(db.Integer(), default=timedelta(minutes=5))
-    created_at = db.Column(db.DateTime(), default=datetime.now())
-    auction_end = db.Column(db.DateTime(), default=created_at + auction_length)
+    auction_length = db.Column(db.Integer(), default=5)
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow())
+    auction_end = db.Column(db.DateTime(), default=datetime.utcnow() + timedelta(minutes=5))
 
     bids = db.relationship('Bid', backref='items', lazy='select')
 
