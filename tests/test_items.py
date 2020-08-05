@@ -6,7 +6,7 @@ from application.models.user import User
 
 
 
-class TestUsers(unittest.TestCase):
+class TestItems(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.test_app = self.app.test_client()
