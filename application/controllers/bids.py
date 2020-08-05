@@ -79,7 +79,7 @@ class BidResources(Resource):
         item = Item.query.filter_by(id=args["item_id"]).first()
         user = User.query.filter_by(id=args["user_id"]).first()
 
-        if not item or user:
+        if not item or not user:
             abort(404, description='That item or user does not exist')
         else:
             bid = Bid(**args)
