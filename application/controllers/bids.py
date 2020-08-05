@@ -94,6 +94,10 @@ class BidResources(Resource):
         if not bid:
             abort(404, description='That bid does not exist')
         else:
+            if 'user_id' in request.json:
+                bid.user_id = request.json['user_id']
+            if 'item_id' in request.json:
+                bid.item_id = request.json['item_id']
             if 'amount' in request.json:
                 bid.amount = request.json['amount']
             if 'winner' in request.json:
