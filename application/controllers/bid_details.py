@@ -4,6 +4,7 @@ from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid_detail import BidDetail
 from application.models.bid import Bid
+from application.models.item import Item
 from datetime import datetime
 
 bid_detail_fields = {
@@ -97,6 +98,14 @@ class BidDetailResources(Resource):
         else:
             bid_detail = BidDetail(**args)
             db.session.add(bid_detail)
+
+            item = Item.query.filter_by(id=bid.item_id).first()
+            if not item:
+                abort(404, description='That item does not exist')
+            else:
+                item.status='sold'
+                db.session.add(item)
+                
             db.session.commit()
 
         return bid_detail
