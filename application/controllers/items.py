@@ -172,10 +172,14 @@ class ItemResources(Resource):
         if not item:
             abort(404, description='That item does not exist')
         else:
+            if 'user_id' in request.json:
+                item.user_id = request.json['user_id']
             if 'title' in request.json:
                 item.title = request.json['title']
             if 'description' in request.json:
                 item.description = request.json['description']
+            if 'status' in request.json:
+                item.status = request.json['status']
             if 'price' in request.json:
                 item.price = request.json['price']
             if 'category' in request.json:
