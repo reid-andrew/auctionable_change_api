@@ -12,7 +12,7 @@ class Bid(db.Model):
     winner = db.Column(db.Boolean(), default=False)
     created_at = db.Column(db.DateTime(), default=datetime.now())
 
-    bid_detail = db.relationship("Bid details", uselist=False, backref="bids")
+    bid_detail = db.relationship("BidDetail", uselist=False, backref="bids")
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
