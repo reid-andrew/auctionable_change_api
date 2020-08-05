@@ -10,7 +10,7 @@ class User(db.Model):
     last_name = db.Column(db.String())
     email = db.Column(db.String())
     password = db.Column(db.String())
-    created_at = db.Column(db.DateTime(), default=datetime.now())
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow())
 
     bids = db.relationship('Bid', backref='users', lazy='select')
     items = db.relationship('Item', backref='users', lazy='select')

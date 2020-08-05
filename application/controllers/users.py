@@ -11,7 +11,7 @@ user_fields = {
     'last_name': fields.String,
     'email': fields.String,
     'password': fields.String,
-    'created_at': fields.DateTime,
+    'created_at': fields.String,
     'bids': fields.List(
         fields.Nested(
             {
@@ -19,7 +19,7 @@ user_fields = {
                 'item_id': fields.Integer,
                 'amount': fields.Float,
                 'winner': fields.Boolean,
-                'created_at': fields.DateTime,
+                'created_at': fields.String,
             }
         )
     ),
@@ -37,8 +37,8 @@ user_fields = {
                 'charity_score': fields.Integer,
                 'image': fields.String,
                 'auction_length': fields.Integer,
-                'created_at': fields.DateTime,
-                'auction_end': fields.DateTime
+                'created_at': fields.String,
+                'auction_end': fields.String
             }
         )
     )

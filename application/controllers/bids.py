@@ -13,7 +13,7 @@ bid_fields = {
     'user_id': fields.Integer,
     'amount': fields.Float,
     'winner': fields.Boolean,
-    'created_at': fields.DateTime,
+    'created_at': fields.String
 }
 
 bid_list_fields = {
@@ -78,6 +78,7 @@ class BidResources(Resource):
 
         item = Item.query.filter_by(id=args["item_id"]).first()
         user = User.query.filter_by(id=args["user_id"]).first()
+
         if not item or user:
             abort(404, description='That item or user does not exist')
         else:

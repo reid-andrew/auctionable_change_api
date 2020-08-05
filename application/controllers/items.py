@@ -29,7 +29,7 @@ item_fields = {
                 'item_id': fields.Integer,
                 'amount': fields.Float,
                 'winner': fields.Boolean,
-                'created_at': fields.DateTime,
+                'created_at': fields.String,
             }
         )
     )

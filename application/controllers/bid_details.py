@@ -14,7 +14,7 @@ bid_detail_fields = {
     'state': fields.String,
     'zip_code': fields.String,
     'receipt': fields.String,
-    'created_at': fields.DateTime
+    'created_at': fields.String
 }
 
 bid_detail_list_fields = {
