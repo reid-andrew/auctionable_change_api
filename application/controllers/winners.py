@@ -143,14 +143,29 @@ class WinnerResources(Resource):
         current_time = datetime.utcnow()
         high_bid = 0.0
         pending_winner = None
-        available_items = Item.query.filter(Item.status=='available',
-                                            Item.auction_end<=current_time,
-                                            Item.bids!=None).all()
+        available_items = Item.query.filter(Item.status=='available', Item.auction_end<=current_time, Item.bids!=None).all()
         if not available_items:
             abort(404, description='No pending winners')
         else:
             for item in available_items:
-                winner = declare_winner(item)
+                submitted_bids = Bid.query.filter_by(item_id=item.id).order_by(Bid.created_at).all()
+                for bid in submitted_bids:
+                    if bid.amount > item.price and bid.amount > high_bid:
+                        high_bid = bid.amount
+                        pending_winner = bid.id
+                    else:
+                        high_bid = high_bid
+
+                if not pending_winner:
+                    abort(404, description='No pending winners')
+                else:
+                    item.status='pending'
+                    db.session.add(item)
+
+                    winner = Bid.query.filter_by(id=pending_winner).first()
+                    winner.winner = True
+                    db.session.add(winner)
+                    db.session.commit()
 
         pending_items = Item.query.filter_by(status='pending').all()
         if not pending_items:
@@ -160,20 +175,3 @@ class WinnerResources(Resource):
                 'count': len(pending_items),
                 'items': [marshal(i, item_fields) for i in pending_items]
             }, item_list_fields)
-
-    def declare_winner(item):
-        submitted_bids = Bid.query.filter_by(item_id=item.id).order_by(Bid.created_at).all()
-        for bid in submitted_bids:
-            if bid.amount > item.price and bid.amount > high_bid:
-                high_bid = bid.amount
-                pending_winner = bid.id
-            else:
-                high_bid = high_bid
-
-        item.status='pending'
-        db.session.add(item)
-        winner = Bid.query.filter_by(id=pending_winner).first()
-        winner.winner = True
-        db.session.add(winner)
-        db.session.commit()
-        return item
