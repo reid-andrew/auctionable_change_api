@@ -6,7 +6,6 @@ from application.models.item import Item
 from application.models.user import User
 
 
-
 class TestBids(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -71,7 +70,8 @@ class TestBids(unittest.TestCase):
           charity_url="http://www.thisisatotallyligiturl.com",
           charity_score=4,
           charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
-          image='img.ul'
+          image='img.ul',
+          auction_length=5
           )
         with self.app.app_context():
             db.session.add(item)
