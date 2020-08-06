@@ -1,5 +1,4 @@
 from application import db
-from datetime import datetime
 
 
 class BidDetail(db.Model):
@@ -12,7 +11,7 @@ class BidDetail(db.Model):
     state = db.Column(db.String())
     zip_code = db.Column(db.String())
     receipt = db.Column(db.String())
-    created_at = db.Column(db.DateTime(), default=datetime.now())
+    created_at = db.Column(db.BigInteger())
 
     def __repr__(self):
         return '<id {}>'.format(self.id)

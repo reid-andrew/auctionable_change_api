@@ -1,3 +1,4 @@
+from math import trunc
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
@@ -15,7 +16,7 @@ bid_detail_fields = {
     'state': fields.String,
     'zip_code': fields.String,
     'receipt': fields.String,
-    'created_at': fields.String
+    'created_at': fields.Integer
 }
 
 bid_detail_list_fields = {
@@ -68,10 +69,11 @@ bid_detail_post_parser.add_argument(
 )
 bid_detail_post_parser.add_argument(
     'created_at',
-    type=datetime,
+    type=int,
     required=False,
     location=['json']
 )
+
 
 class BidDetailResources(Resource):
     def get(self, bid_detail_id=None):
@@ -97,6 +99,8 @@ class BidDetailResources(Resource):
             abort(404, description='That bid does not exist')
         else:
             bid_detail = BidDetail(**args)
+            dt = trunc(datetime.now().timestamp())
+            bid_detail.created_at = dt
             db.session.add(bid_detail)
 
             item = Item.query.filter_by(id=bid.item_id).first()
@@ -105,10 +109,10 @@ class BidDetailResources(Resource):
             else:
                 item.status='sold'
                 db.session.add(item)
-                
+
             db.session.commit()
 
-        return bid_detail
+            return bid_detail
 
     @marshal_with(bid_detail_fields)
     def put(self, bid_detail_id=None):

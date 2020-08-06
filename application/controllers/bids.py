@@ -1,3 +1,4 @@
+from math import trunc
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
@@ -13,7 +14,7 @@ bid_fields = {
     'user_id': fields.Integer,
     'amount': fields.Float,
     'winner': fields.Boolean,
-    'created_at': fields.String
+    'created_at': fields.Integer,
 }
 
 bid_list_fields = {
@@ -51,7 +52,7 @@ bid_post_parser.add_argument(
 )
 bid_post_parser.add_argument(
     'created_at',
-    type=datetime,
+    type=int,
     required=False,
     location=['json']
 )
@@ -83,6 +84,8 @@ class BidResources(Resource):
             abort(404, description='That item or user does not exist')
         else:
             bid = Bid(**args)
+            dt = trunc(datetime.now().timestamp())
+            bid.created_at = dt
             db.session.add(bid)
             db.session.commit()
 

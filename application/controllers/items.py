@@ -1,3 +1,4 @@
+from math import trunc
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
@@ -20,8 +21,8 @@ item_fields = {
     'charity_score_image': fields.String,
     'image': fields.String,
     'auction_length': fields.Integer,
-    'created_at': fields.String,
-    'auction_end': fields.String,
+    'created_at': fields.Integer,
+    'auction_end': fields.Integer,
     'bids': fields.List(
         fields.Nested(
             {
@@ -29,7 +30,7 @@ item_fields = {
                 'item_id': fields.Integer,
                 'amount': fields.Float,
                 'winner': fields.Boolean,
-                'created_at': fields.String,
+                'created_at': fields.Integer,
             }
         )
     )
@@ -125,13 +126,13 @@ item_post_parser.add_argument(
 )
 item_post_parser.add_argument(
     'created_at',
-    type=datetime,
+    type=int,
     required=False,
     location=['json']
 )
 item_post_parser.add_argument(
     'auction_end',
-    type=datetime,
+    type=int,
     required=False,
     location=['json']
 )
@@ -161,10 +162,15 @@ class ItemResources(Resource):
             abort(404, description='That user does not exist')
         else:
             item = Item(**args)
+            dt = trunc(datetime.now().timestamp())
+            item.created_at = dt
+            # auction_length is in minutes - multiply by 60 to get seconds to add to timestamp
+            seconds = item.auction_length * 60
+            item.auction_end = dt + seconds
             db.session.add(item)
             db.session.commit()
 
-        return item
+            return item
 
     @marshal_with(item_fields)
     def put(self, item_id=None):

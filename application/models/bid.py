@@ -1,5 +1,4 @@
 from application import db
-from datetime import datetime
 
 
 class Bid(db.Model):
@@ -10,7 +9,7 @@ class Bid(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     amount = db.Column(db.Float())
     winner = db.Column(db.Boolean(), default=False)
-    created_at = db.Column(db.DateTime(), default=datetime.now())
+    created_at = db.Column(db.BigInteger())
 
     bid_detail = db.relationship("BidDetail", uselist=False, backref="bids")
 

@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from application import db
 
 
@@ -17,9 +16,10 @@ class Item(db.Model):
     charity_score = db.Column(db.Integer())
     charity_score_image = db.Column(db.String())
     image = db.Column(db.String())
+    # minutes ONLY
     auction_length = db.Column(db.Integer(), default=5)
-    created_at = db.Column(db.DateTime(), default=datetime.utcnow())
-    auction_end = db.Column(db.DateTime(), default=datetime.utcnow() + timedelta(minutes=5))
+    created_at = db.Column(db.BigInteger())
+    auction_end = db.Column(db.BigInteger())
 
     bids = db.relationship('Bid', backref='items', lazy='select')
 
