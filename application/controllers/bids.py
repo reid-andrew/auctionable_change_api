@@ -1,5 +1,4 @@
 from math import trunc
-
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
@@ -80,7 +79,8 @@ class BidResources(Resource):
 
         item = Item.query.filter_by(id=args["item_id"]).first()
         user = User.query.filter_by(id=args["user_id"]).first()
-        if not item or user:
+
+        if not item or not user:
             abort(404, description='That item or user does not exist')
         else:
             bid = Bid(**args)
@@ -97,6 +97,10 @@ class BidResources(Resource):
         if not bid:
             abort(404, description='That bid does not exist')
         else:
+            if 'user_id' in request.json:
+                bid.user_id = request.json['user_id']
+            if 'item_id' in request.json:
+                bid.item_id = request.json['item_id']
             if 'amount' in request.json:
                 bid.amount = request.json['amount']
             if 'winner' in request.json:
