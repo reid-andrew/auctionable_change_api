@@ -1,3 +1,4 @@
+from math import trunc
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
@@ -11,7 +12,7 @@ user_fields = {
     'last_name': fields.String,
     'email': fields.String,
     'password': fields.String,
-    'created_at': fields.DateTime,
+    'created_at': fields.Integer,
     'bids': fields.List(
         fields.Nested(
             {
@@ -19,7 +20,7 @@ user_fields = {
                 'item_id': fields.Integer,
                 'amount': fields.Float,
                 'winner': fields.Boolean,
-                'created_at': fields.DateTime,
+                'created_at': fields.Integer,
             }
         )
     ),
@@ -37,8 +38,8 @@ user_fields = {
                 'charity_score': fields.Integer,
                 'image': fields.String,
                 'auction_length': fields.Integer,
-                'created_at': fields.DateTime,
-                'auction_end': fields.DateTime
+                'created_at': fields.Integer,
+                'auction_end': fields.Integer
             }
         )
     )
@@ -80,7 +81,7 @@ user_post_parser.add_argument(
 )
 user_post_parser.add_argument(
     'created_at',
-    type=datetime,
+    type=int,
     required=False,
     location=['json']
 )
@@ -105,6 +106,8 @@ class UserResources(Resource):
     def post(self):
         args = user_post_parser.parse_args()
         user = User(**args)
+        dt = trunc(datetime.now().timestamp())
+        user.created_at = dt
         db.session.add(user)
         db.session.commit()
 
