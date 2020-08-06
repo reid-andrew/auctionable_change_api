@@ -3,57 +3,93 @@ import json
 from application import create_app, db
 from application.models.bid import Bid
 from application.models.item import Item
+from application.models.user import User
 
 
-class TestUsers(unittest.TestCase):
+
+class TestBids(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.test_app = self.app.test_client()
         with self.app.app_context():
             db.create_all()
 
+        user = User(
+            first_name="Johnny",
+            last_name="McSellingstuff",
+            email="jm@example.com",
+            password="12345"
+        )
+        with self.app.app_context():
+            db.session.add(user)
+            db.session.commit()
+
+        user = User(
+            first_name="Jose",
+            last_name="De Los Buyingstuff",
+            email="jd@example.com",
+            password="12345"
+        )
+        with self.app.app_context():
+            db.session.add(user)
+            db.session.commit()
+
+        user = User(
+            first_name="Jacques",
+            last_name="Du Purchaser",
+            email="jdp@example.com",
+            password="12345"
+        )
+        with self.app.app_context():
+            db.session.add(user)
+            db.session.commit()
+
         item = Item(
-            description="Antique Tea set",
-            donor="Demo McDemoFace",
-            donor_email="demomcdemoface@example.com",
-            price=140.00,
-            status="For Sale",
+            user_id=1,
             title="Tea Set",
+            description="Antique Tea set",
+            price=140.00,
             category="furniture",
             charity="Big Cat Rescue",
             charity_url="http://www.thisisatotallyligiturl.com",
             charity_score=4,
-            image="img.ul"
-        )
+            charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
+            image="img.ul",
+            auction_length=5
+          )
+        with self.app.app_context():
+            db.session.add(item)
+            db.session.commit()
+
+        item = Item(
+          user_id=1,
+          title="Rocking Chair",
+          description="Vintage wood rocking chair",
+          price=40.00,
+          category='furniture',
+          charity='Big Cat Rescue',
+          charity_url="http://www.thisisatotallyligiturl.com",
+          charity_score=4,
+          charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
+          image='img.ul'
+          )
         with self.app.app_context():
             db.session.add(item)
             db.session.commit()
 
         bid = Bid(
-            bidder_name="Testy McTesterson",
-            bidder_email="testymctesterson@example.com",
-            amount=300.00,
-            street_address="123 This Is My Street Way",
-            city="My City",
-            state="Colorado",
-            zip_code="12345",
-            receipt="img.ul",
-            item_id=1
+            item_id=1,
+            user_id=2,
+            amount=300.00
           )
         with self.app.app_context():
             db.session.add(bid)
             db.session.commit()
 
         bid = Bid(
-          bidder_name="Elmo",
-          bidder_email="elmo@example.com",
+          item_id=1,
+          user_id=3,
           amount=400.00,
-          street_address="123 Sesame Street ",
-          city="New York",
-          state='New York',
-          zip_code='10005',
-          receipt='img.ul',
-          item_id=1
           )
         with self.app.app_context():
             db.session.add(bid)
@@ -73,9 +109,10 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 2)
-        self.assertEquals(payload['bids'][0]['city'], 'My City')
-        self.assertEquals(payload['bids'][0]['zip_code'], '12345')
-        self.assertEquals(payload['bids'][-1]['bidder_email'], 'elmo@example.com')
+        self.assertEquals(payload['bids'][0]['user_id'], 2)
+        self.assertEquals(payload['bids'][0]['amount'], 300.00)
+        self.assertEquals(payload['bids'][0]['winner'], False)
+        self.assertEquals(payload['bids'][-1]['user_id'], 3)
         self.assertEquals(payload['bids'][-1]['amount'], 400.00)
 
     def test_get_one_bid(self):
@@ -87,9 +124,9 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
         self.assertEquals(payload['id'], 2)
-        self.assertEquals(payload['bidder_email'], 'elmo@example.com')
+        self.assertEquals(payload['user_id'], 3)
         self.assertEquals(payload['amount'], 400.00)
-        self.assertEquals(payload['city'], 'New York')
+        self.assertEquals(payload['winner'], False)
 
     def test_sad_path_for_nonexistent_bid(self):
         response = self.test_app.get(
@@ -103,35 +140,25 @@ class TestUsers(unittest.TestCase):
         response = self.test_app.post(
             '/bids',
             json={
-                'bidder_name': 'Hermione',
-                'bidder_email': 'granger@example.com',
-                'amount': 500.00,
-                'street_address': '5600 Hogwarts Way',
-                'city': 'Magic',
-                'state': 'Spells',
-                'zip_code': '09876',
-                'receipt': 'img.ul',
-                'item_id': 1
+                'item_id': 1,
+                'user_id': 2,
+                'amount': 500.00
             },
             follow_redirects=True
         )
 
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
-        self.assertEquals(payload['city'], 'Magic')
-        self.assertEquals(payload['zip_code'], '09876')
+        self.assertEquals(payload['user_id'], 2)
+        self.assertEquals(payload['amount'], 500.00)
+        self.assertEquals(payload['winner'], False)
 
     def test_sad_path_for_create_bid_with_missing_info(self):
         response = self.test_app.post(
             '/bids',
             json={
-                'amount': 500.00,
-                'street_address': '5600 Hogwarts Way',
-                'city': 'Magic',
-                'state': 'Spells',
-                'zip_code': '09876',
-                'receipt': 'img.ul',
-                'item_id': 1
+                'item_id': 1,
+                'amount': 500.00
             },
             follow_redirects=True
         )
@@ -142,15 +169,9 @@ class TestUsers(unittest.TestCase):
         response = self.test_app.post(
             '/bids',
             json={
-                'bidder_name': 'Hermione',
-                'bidder_email': 'granger@example.com',
-                'amount': 500.00,
-                'street_address': '5600 Hogwarts Way',
-                'city': 'Magic',
-                'state': 'Spells',
-                'zip_code': '09876',
-                'receipt': 'img.ul',
-                'item_id': 1111
+                'item_id': 1111,
+                'user_id': 2,
+                'amount': 500.00
             },
             follow_redirects=True
         )
@@ -161,52 +182,45 @@ class TestUsers(unittest.TestCase):
         response = self.test_app.put(
             '/bids/1',
             json={
-                'bidder_name': 'Updated Name',
-                'bidder_email': 'new@email.com'
+                'user_id': 3,
+                'amount': 999.15
             },
             follow_redirects=True
         )
 
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
-        self.assertEquals(payload['bidder_name'], 'Updated Name')
-        self.assertEquals(payload['bidder_email'], 'new@email.com')
-        self.assertEquals(payload['zip_code'], '12345')
-        self.assertEquals(payload['city'], 'My City')
+        self.assertEquals(payload['user_id'], 3)
+        self.assertEquals(payload['amount'], 999.15)
+        self.assertEquals(payload['item_id'], 1)
+        self.assertEquals(payload['winner'], False)
 
     def test_update_can_update_all_fields(self):
         response = self.test_app.put(
             '/bids/1',
             json={
-                'bidder_name': 'Joe Strummer',
-                'bidder_email': 'clampdown@clash.com',
-                'amount': 19.79,
-                'street_address': '123 Clash St.',
-                'city': 'Hitsville',
-                'state': 'UK',
-                'zip_code': '99999',
-                'receipt': 'www.death_or_glory.com'
+                'item_id': 2,
+                'user_id': 3,
+                'amount': 500.00,
+                'winner': True
             },
             follow_redirects=True
         )
 
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
-        self.assertEquals(payload['bidder_name'], 'Joe Strummer')
-        self.assertEquals(payload['bidder_email'], 'clampdown@clash.com')
-        self.assertEquals(payload['amount'], 19.79)
-        self.assertEquals(payload['street_address'], '123 Clash St.')
-        self.assertEquals(payload['city'], 'Hitsville')
-        self.assertEquals(payload['state'], 'UK')
-        self.assertEquals(payload['zip_code'], '99999')
-        self.assertEquals(payload['receipt'], 'www.death_or_glory.com')
+        self.assertEquals(payload['item_id'], 2)
+        self.assertEquals(payload['user_id'], 3)
+        self.assertEquals(payload['amount'], 500.00)
+        self.assertEquals(payload['winner'], True)
 
     def test_sad_path_for_update_bid(self):
         response = self.test_app.put(
             '/bids/1111',
             json={
-                'bidder_name': 'Joe Strummer',
-                'bidder_email': 'clampdown@clash.com'
+                'item_id': 2,
+                'user_id': 3,
+                'amount': 500.00
             },
             follow_redirects=True
         )

@@ -15,7 +15,7 @@ class TestWelcome(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
-    def test_gets_all_charities(self):
+    def test_gets_welcome_screen(self):
         response = self.test_app.get(
             '/',
             follow_redirects=True

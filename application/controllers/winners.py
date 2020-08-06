@@ -1,10 +1,12 @@
 from application import db
+from application.models.user import User
+from application.models.item import Item
+from application.models.bid import Bid
 from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
-from application.models.item import Item
-from application.models.user import User
 from datetime import datetime
+
 
 item_fields = {
     'id': fields.Integer,
@@ -132,84 +134,43 @@ item_post_parser.add_argument(
 item_post_parser.add_argument(
     'auction_end',
     type=datetime,
-    required=False,
+    required=True,
     location=['json']
 )
 
-
-class ItemResources(Resource):
-    def get(self, item_id=None):
-        if item_id:
-            item = Item.query.filter_by(id=item_id).first()
-            if not item:
-                abort(404, description='That item does not exist')
-            else:
-                return marshal(item, item_fields)
+class WinnerResources(Resource):
+    def put(self):
+        current_time = datetime.utcnow()
+        available_items = Item.query.filter(Item.status=='available',
+                                            Item.auction_end<=current_time,
+                                            Item.bids!=None).all()
+        if not available_items:
+            abort(404, description='No pending winners')
         else:
-            items = Item.query.filter_by(status='available').all()
+            for item in available_items:
+                high_bid = 0.0
+                pending_winner = None
+                submitted_bids = Bid.query.filter_by(item_id=item.id).order_by(Bid.created_at).all()
+                for bid in submitted_bids:
+                    if bid.amount > item.price and bid.amount > high_bid:
+                        high_bid = bid.amount
+                        pending_winner = bid.id
+                    else:
+                        high_bid = high_bid
+
+                item.status='pending'
+                db.session.add(item)
+
+                winner = Bid.query.filter_by(id=pending_winner).first()
+                winner.winner = True
+                db.session.add(winner)
+                db.session.commit()
+
+        pending_items = Item.query.filter_by(status='pending').all()
+        if not pending_items:
+            abort(404, description='No pending winners')
+        else:
             return marshal({
-                'count': len(items),
-                'items': [marshal(i, item_fields) for i in items]
+                'count': len(pending_items),
+                'items': [marshal(i, item_fields) for i in pending_items]
             }, item_list_fields)
-
-    @marshal_with(item_fields)
-    def post(self):
-        args = item_post_parser.parse_args()
-
-        user = User.query.filter_by(id=args["user_id"]).first()
-        if not user:
-            abort(404, description='That user does not exist')
-        else:
-            item = Item(**args)
-            db.session.add(item)
-            db.session.commit()
-
-        return item
-
-    @marshal_with(item_fields)
-    def put(self, item_id=None):
-        item = Item.query.get(item_id)
-        if not item:
-            abort(404, description='That item does not exist')
-        else:
-            if 'user_id' in request.json:
-                item.user_id = request.json['user_id']
-            if 'title' in request.json:
-                item.title = request.json['title']
-            if 'description' in request.json:
-                item.description = request.json['description']
-            if 'status' in request.json:
-                item.status = request.json['status']
-            if 'price' in request.json:
-                item.price = request.json['price']
-            if 'category' in request.json:
-                item.category = request.json['category']
-            if 'charity' in request.json:
-                item.charity = request.json['charity']
-            if 'charity_url' in request.json:
-                item.charity_url = request.json['charity_url']
-            if 'charity_score' in request.json:
-                item.charity_score = request.json['charity_score']
-            if 'charity_score_image' in request.json:
-                item.charity_score_image = request.json['charity_score_image']
-            if 'image' in request.json:
-                item.image = request.json['image']
-            if 'auction_length' in request.json:
-                item.auction_length = request.json['auction_length']
-            if 'auction_end' in request.json:
-                item.auction_end = request.json['auction_end']
-            db.session.commit()
-            return item
-
-    @marshal_with(item_fields)
-    def delete(self, item_id=None):
-        item = Item.query.get(item_id)
-        if not item:
-            abort(404, description='That item does not exist')
-        elif not item.bids == []:
-            abort(403, description='Cannot delete item with associated bids')
-        else:
-            db.session.delete(item)
-            db.session.commit()
-
-            return item

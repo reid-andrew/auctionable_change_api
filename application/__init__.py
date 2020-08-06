@@ -34,17 +34,23 @@ def create_app(config_name):
 
     from application.models.item import Item
     from application.models.bid import Bid
+    from application.models.bid_detail import BidDetail
+    from application.models.user import User
 
     from application.controllers.welcome import WelcomeResources
     from application.controllers.items import ItemResources
     from application.controllers.bids import BidResources
     from application.controllers.charities import CharityResources
-
+    from application.controllers.bid_details import BidDetailResources
+    from application.controllers.users import UserResources
+    from application.controllers.winners import WinnerResources
 
     api.add_resource(WelcomeResources, '/')
+    api.add_resource(WinnerResources, '/items/winners')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
-
+    api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')
+    api.add_resource(UserResources, '/users', '/users/<int:user_id>')
 
     return app
