@@ -11,7 +11,6 @@ user_fields = {
     'first_name': fields.String,
     'last_name': fields.String,
     'email': fields.String,
-    'password': fields.String,
     'created_at': fields.Integer,
     'bids': fields.List(
         fields.Nested(
@@ -106,8 +105,13 @@ class UserResources(Resource):
     def post(self):
         args = user_post_parser.parse_args()
         user = User(**args)
+        email = user.email
+        password = user.password
+        if User.query.filter_by(email=email).first() is not None:
+            abort(400, description='Email already in use')
         dt = trunc(datetime.now().timestamp())
         user.created_at = dt
+        user.hash_password(password)
         db.session.add(user)
         db.session.commit()
 
