@@ -1,8 +1,9 @@
-from application import db
+from application import db, app_config
+from flask_login import UserMixin
 from passlib.apps import custom_app_context as pwd_context
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +21,10 @@ class User(db.Model):
 
     def verify_password(self, act_password):
         return pwd_context.verify(act_password, self.password)
+
+    @login.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
     def __repr__(self):
         return '<id {}>'.format(self.id)

@@ -48,6 +48,8 @@ class AuthResources(Resource):
             login_user(user, remember=form.remember_me.data)
             return redirect(url_for('index'))
         return render_template('login.html', title='Sign In', form=form)
+
+
     # def get(self, search_term=None):
     #     search_term = "" if search_term is None else search_term
     #     chars = return_charities(search_term)
