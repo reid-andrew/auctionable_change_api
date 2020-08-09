@@ -1,4 +1,5 @@
 from application import db
+from passlib.apps import custom_app_context as pwd_context
 
 
 class User(db.Model):
@@ -13,6 +14,12 @@ class User(db.Model):
 
     bids = db.relationship('Bid', backref='users', lazy='select')
     items = db.relationship('Item', backref='users', lazy='select')
+
+    def hash_password(self, act_password):
+        self.password = pwd_context.encrypt(act_password)
+
+    def verify_password(self, act_password):
+        return pwd_context.verify(act_password, self.password)
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
