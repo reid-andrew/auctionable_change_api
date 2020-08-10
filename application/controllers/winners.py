@@ -6,6 +6,8 @@ from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from datetime import datetime
+from math import trunc
+
 
 
 item_fields = {
@@ -139,8 +141,8 @@ item_post_parser.add_argument(
 )
 
 class WinnerResources(Resource):
-    def put(self):
-        current_time = datetime.utcnow()
+    def post(self):
+        current_time = trunc(datetime.now().timestamp())
         available_items = Item.query.filter(Item.status=='available',
                                             Item.auction_end<=current_time,
                                             Item.bids!=None).all()
