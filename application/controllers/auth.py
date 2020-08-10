@@ -47,7 +47,7 @@ class AuthResources(Resource):
         if user is None or not user.verify_password(password):
             abort(400, description='Username or password incorrect')
         response_object = {
-            'status': 'success',
-            'message': 'Successfully logged in.'
+            'message': 'Successfully logged in.',
+            'user_id': user.id
         }
         return make_response(jsonify(response_object), 200)
