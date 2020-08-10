@@ -46,8 +46,11 @@ class AuthResources(Resource):
         user = User.query.filter_by(email=email).first()
         if user is None or not user.verify_password(password):
             abort(400, description='Username or password incorrect')
+        user = User.query.filter_by(email=email).first()
+        auth_token = user.encode_auth_token(user.id)
         response_object = {
             'message': 'Successfully logged in.',
-            'user_id': user.id
+            'user_id': user.id,
+            'user_token': auth_token.decode()
         }
         return make_response(jsonify(response_object), 200)
