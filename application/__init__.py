@@ -12,6 +12,10 @@ db = SQLAlchemy()
 def create_app(config_name):
     app = Flask(__name__)
     login = LoginManager(app)
+
+    @login.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
     CORS(app)
 
     SWAGGER_URL = '/swagger'
@@ -45,6 +49,7 @@ def create_app(config_name):
     from application.controllers.bid_details import BidDetailResources
     from application.controllers.users import UserResources
     from application.controllers.winners import WinnerResources
+    from application.controllers.auth import AuthResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(WinnerResources, '/items/winners')
@@ -53,5 +58,6 @@ def create_app(config_name):
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
     api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')
     api.add_resource(UserResources, '/users', '/users/<int:user_id>')
+    api.add_resource(AuthResources, '/login')
 
     return app
