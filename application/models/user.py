@@ -1,9 +1,11 @@
+from datetime import datetime
+from math import trunc
 from application import db
 from flask_login import UserMixin
 from passlib.apps import custom_app_context as pwd_context
 
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,8 +23,6 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, act_password):
         return pwd_context.verify(act_password, self.password)
-
-
 
     def __repr__(self):
         return '<id {}>'.format(self.id)

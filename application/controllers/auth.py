@@ -38,8 +38,6 @@ user_post_parser.add_argument(
 
 class AuthResources(Resource):
     def post(self):
-        # args = user_post_parser.parse_args()
-        # auth = User(**args)
         post_data = request.get_json()
         email = post_data.get('email')
         password = post_data.get('password')
@@ -53,12 +51,3 @@ class AuthResources(Resource):
             'message': 'Successfully logged in.'
         }
         return make_response(jsonify(response_object), 200)
-
-    # def get(self, search_term=None):
-    #     search_term = "" if search_term is None else search_term
-    #     chars = return_charities(search_term)
-    #
-    #     return marshal({
-    #         'count': len(chars),
-    #         'charities': [marshal(c, charity_fields) for c in chars]
-    #     }, charity_list_fields)

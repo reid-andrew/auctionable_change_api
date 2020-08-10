@@ -103,15 +103,15 @@ class UserResources(Resource):
 
     @marshal_with(user_fields)
     def post(self):
-        args = user_post_parser.parse_args()
-        user = User(**args)
-        email = user.email
-        password = user.password
+        email = request.json.get('email')
+        password = request.json.get('password')
         if User.query.filter_by(email=email).first() is not None:
             abort(400, description='Email already in use')
+        args = user_post_parser.parse_args()
+        user = User(**args)
+        user.hash_password(password)
         dt = trunc(datetime.now().timestamp())
         user.created_at = dt
-        user.hash_password(password)
         db.session.add(user)
         db.session.commit()
 
