@@ -160,13 +160,20 @@ class WinnerResources(Resource):
                     else:
                         high_bid = high_bid
 
-                item.status='pending'
-                db.session.add(item)
-
                 winner = Bid.query.filter_by(id=pending_winner).first()
-                winner.winner = True
-                db.session.add(winner)
-                db.session.commit()
+                if winner:
+                    item.status='pending'
+                    db.session.add(item)
+
+                    winner.winner = True
+                    db.session.add(winner)
+                    db.session.commit()
+                else:
+                    item.status='available'
+                    seconds = item.auction_length * 60
+                    item.auction_end = current_time + seconds
+                    db.session.add(item)
+                    db.session.commit()
 
         pending_items = Item.query.filter_by(status='pending').all()
         if not pending_items:
