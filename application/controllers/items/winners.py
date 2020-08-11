@@ -8,8 +8,6 @@ from flask_restful import fields, marshal_with, marshal
 from datetime import datetime
 from math import trunc
 
-
-
 item_fields = {
     'id': fields.Integer,
     'user_id': fields.Integer,
