@@ -47,6 +47,8 @@ def create_app(config_name):
     from application.controllers.items.pending_controller import PendingItemResources
     from application.controllers.items.sold_controller import SoldItemResources
     from application.controllers.items.winners_controller import WinnerResources
+    from application.controllers.bids.winners_controller import WinnerBidResources
+
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(AvailableItemResources, '/items/available')
@@ -54,6 +56,7 @@ def create_app(config_name):
     api.add_resource(SoldItemResources, '/items/sold')
     api.add_resource(WinnerResources, '/items/winners')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
+    api.add_resource(WinnerBidResources, '/bids/winners')
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
     api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')
