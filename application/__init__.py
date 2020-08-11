@@ -37,12 +37,12 @@ def create_app(config_name):
     from application.models.bid_detail import BidDetail
     from application.models.user import User
 
-    from application.controllers.welcome import WelcomeResources
-    from application.controllers.items import ItemResources
-    from application.controllers.bids import BidResources
-    from application.controllers.charities import CharityResources
-    from application.controllers.bid_details import BidDetailResources
-    from application.controllers.users import UserResources
+    from application.controllers.welcome_controller import WelcomeResources
+    from application.controllers.items_controller import ItemResources
+    from application.controllers.bids_controller import BidResources
+    from application.controllers.bid_details_controller import BidDetailResources
+    from application.controllers.charities_controller import CharityResources
+    from application.controllers.users_controller import UserResources
     from application.controllers.winners import WinnerResources
 
     api.add_resource(WelcomeResources, '/')
