@@ -144,5 +144,3 @@ class AvailableItemResources(Resource):
             'count': len(items),
             'items': [marshal(i, item_fields) for i in items]
         }, item_list_fields)
-
-    @marshal_with(item_fields)
