@@ -147,7 +147,7 @@ class ItemResources(Resource):
             else:
                 return marshal(item, item_fields)
         else:
-            items = Item.query.filter_by(status='available').all()
+            items = Item.query.all()
             return marshal({
                 'count': len(items),
                 'items': [marshal(i, item_fields) for i in items]
