@@ -43,7 +43,7 @@ def create_app(config_name):
     from application.controllers.charities import CharityResources
     from application.controllers.bid_details import BidDetailResources
     from application.controllers.users import UserResources
-    from application.controllers.items.winners import WinnerResources
+    from application.controllers.winners import WinnerResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(WinnerResources, '/items/winners')
