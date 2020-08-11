@@ -44,10 +44,14 @@ def create_app(config_name):
     from application.controllers.charities_controller import CharityResources
     from application.controllers.users_controller import UserResources
     from application.controllers.items.available_controller import AvailableItemResources
+    from application.controllers.items.pending_controller import PendingItemResources
+    from application.controllers.items.sold_controller import SoldItemResources
     from application.controllers.items.winners_controller import WinnerResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(AvailableItemResources, '/items/available')
+    api.add_resource(PendingItemResources, '/items/pending')
+    api.add_resource(SoldItemResources, '/items/sold')
     api.add_resource(WinnerResources, '/items/winners')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
