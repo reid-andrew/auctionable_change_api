@@ -49,7 +49,8 @@ def create_app(config_name):
     from application.controllers.bid_details import BidDetailResources
     from application.controllers.users import UserResources
     from application.controllers.winners import WinnerResources
-    from application.controllers.auth import AuthResources
+    from application.controllers.auth import LoginResources
+    from application.controllers.auth import LogoutResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(WinnerResources, '/items/winners')
@@ -58,6 +59,7 @@ def create_app(config_name):
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
     api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')
     api.add_resource(UserResources, '/users', '/users/<int:user_id>')
-    api.add_resource(AuthResources, '/login')
+    api.add_resource(LoginResources, '/login')
+    api.add_resource(LogoutResources, '/logout')
 
     return app
