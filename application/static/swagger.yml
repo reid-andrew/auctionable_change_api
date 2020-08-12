@@ -24,7 +24,7 @@ tags:
 paths:
   /items:
     get:
-      summary: Returns a list of available items.
+      summary: Returns a list of all items.
       tags:
         - Items
       responses:
@@ -142,6 +142,57 @@ paths:
           description: Cannot delete item with associated bids
         '404':
           description: Item not found
+  /items/available:
+    get:
+      summary: Returns a list of available items.
+      tags:
+        - Items
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Items'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Items'
+
+        '400':
+          description: Bad Request
+  /items/pending:
+    get:
+      summary: Returns a list of items for which an auction has concluded, but the item has not yet been sold.
+      tags:
+        - Items
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Items'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Items'
+
+        '400':
+          description: Bad Request
+  /items/sold:
+    get:
+      summary: Returns a list of items which have been sold.
+      tags:
+        - Items
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Items'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Items'
+
+        '400':
+          description: Bad Request
   /bids:
       get:
         summary: Returns a list of available bids.
@@ -258,6 +309,23 @@ paths:
                   $ref: '#/components/examples/Bid'
         '404':
           description: Bid not found
+  /bids/winners:
+    get:
+      summary: Returns a list of all winning bids.
+      tags:
+        - Bids
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bids'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Bids'
+
+        '400':
+          description: Bad Request
   /charities:
     get:
       summary: Returns a list of rated charities from Charity Navigator.

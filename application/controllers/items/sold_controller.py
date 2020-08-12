@@ -137,85 +137,10 @@ item_post_parser.add_argument(
     location=['json']
 )
 
-
-class ItemResources(Resource):
+class SoldItemResources(Resource):
     def get(self, item_id=None):
-        if item_id:
-            item = Item.query.filter_by(id=item_id).first()
-            if not item:
-                abort(404, description='That item does not exist')
-            else:
-                return marshal(item, item_fields)
-        else:
-            items = Item.query.filter_by(status='available').all()
-            return marshal({
-                'count': len(items),
-                'items': [marshal(i, item_fields) for i in items]
-            }, item_list_fields)
-
-    @marshal_with(item_fields)
-    def post(self):
-        args = item_post_parser.parse_args()
-
-        user = User.query.filter_by(id=args["user_id"]).first()
-        if not user:
-            abort(404, description='That user does not exist')
-        else:
-            item = Item(**args)
-            dt = trunc(datetime.now().timestamp())
-            item.created_at = dt
-            # auction_length is in minutes - multiply by 60 to get seconds to add to timestamp
-            seconds = item.auction_length * 60
-            item.auction_end = dt + seconds
-            db.session.add(item)
-            db.session.commit()
-
-            return item
-
-    @marshal_with(item_fields)
-    def put(self, item_id=None):
-        item = Item.query.get(item_id)
-        if not item:
-            abort(404, description='That item does not exist')
-        else:
-            if 'user_id' in request.json:
-                item.user_id = request.json['user_id']
-            if 'title' in request.json:
-                item.title = request.json['title']
-            if 'description' in request.json:
-                item.description = request.json['description']
-            if 'status' in request.json:
-                item.status = request.json['status']
-            if 'price' in request.json:
-                item.price = request.json['price']
-            if 'category' in request.json:
-                item.category = request.json['category']
-            if 'charity' in request.json:
-                item.charity = request.json['charity']
-            if 'charity_url' in request.json:
-                item.charity_url = request.json['charity_url']
-            if 'charity_score' in request.json:
-                item.charity_score = request.json['charity_score']
-            if 'charity_score_image' in request.json:
-                item.charity_score_image = request.json['charity_score_image']
-            if 'image' in request.json:
-                item.image = request.json['image']
-            if 'auction_length' in request.json:
-                item.auction_length = request.json['auction_length']
-            if 'auction_end' in request.json:
-                item.auction_end = request.json['auction_end']
-            db.session.commit()
-            return item
-
-    @marshal_with(item_fields)
-    def delete(self, item_id=None):
-        item = Item.query.get(item_id)
-        if not item:
-            abort(404, description='That item does not exist')
-        elif not item.bids == []:
-            abort(403, description='Cannot delete item with associated bids')
-        else:
-            db.session.delete(item)
-            db.session.commit()
-
-            return item
+        items = Item.query.filter_by(status='sold').all()
+        return marshal({
+            'count': len(items),
+            'items': [marshal(i, item_fields) for i in items]
+        }, item_list_fields)

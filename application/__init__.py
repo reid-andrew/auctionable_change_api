@@ -5,6 +5,7 @@ from flask_cors import CORS
 from application.config import app_config
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_login import LoginManager
+import application.static
 
 db = SQLAlchemy()
 
@@ -42,19 +43,27 @@ def create_app(config_name):
     from application.models.bid_detail import BidDetail
     from application.models.user import User
 
-    from application.controllers.welcome import WelcomeResources
-    from application.controllers.items import ItemResources
-    from application.controllers.bids import BidResources
-    from application.controllers.charities import CharityResources
-    from application.controllers.bid_details import BidDetailResources
-    from application.controllers.users import UserResources
-    from application.controllers.winners import WinnerResources
+    from application.controllers.welcome_controller import WelcomeResources
+    from application.controllers.items_controller import ItemResources
+    from application.controllers.bids_controller import BidResources
+    from application.controllers.bid_details_controller import BidDetailResources
+    from application.controllers.charities_controller import CharityResources
+    from application.controllers.users_controller import UserResources
+    from application.controllers.items.available_controller import AvailableItemResources
+    from application.controllers.items.pending_controller import PendingItemResources
+    from application.controllers.items.sold_controller import SoldItemResources
+    from application.controllers.items.winners_controller import WinnerResources
+    from application.controllers.bids.winners_controller import WinnerBidResources
     from application.controllers.auth import LoginResources
     from application.controllers.auth import LogoutResources
 
     api.add_resource(WelcomeResources, '/')
+    api.add_resource(AvailableItemResources, '/items/available')
+    api.add_resource(PendingItemResources, '/items/pending')
+    api.add_resource(SoldItemResources, '/items/sold')
     api.add_resource(WinnerResources, '/items/winners')
     api.add_resource(ItemResources, '/items', '/items/<int:item_id>')
+    api.add_resource(WinnerBidResources, '/bids/winners')
     api.add_resource(BidResources, '/bids', '/bids/<int:bid_id>')
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
     api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')

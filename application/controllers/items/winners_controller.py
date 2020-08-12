@@ -6,7 +6,7 @@ from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from datetime import datetime
-
+from math import trunc
 
 item_fields = {
     'id': fields.Integer,
@@ -139,8 +139,8 @@ item_post_parser.add_argument(
 )
 
 class WinnerResources(Resource):
-    def put(self):
-        current_time = datetime.utcnow()
+    def post(self):
+        current_time = trunc(datetime.now().timestamp())
         available_items = Item.query.filter(Item.status=='available',
                                             Item.auction_end<=current_time,
                                             Item.bids!=None).all()
@@ -158,13 +158,20 @@ class WinnerResources(Resource):
                     else:
                         high_bid = high_bid
 
-                item.status='pending'
-                db.session.add(item)
-
                 winner = Bid.query.filter_by(id=pending_winner).first()
-                winner.winner = True
-                db.session.add(winner)
-                db.session.commit()
+                if winner:
+                    item.status='pending'
+                    db.session.add(item)
+
+                    winner.winner = True
+                    db.session.add(winner)
+                    db.session.commit()
+                else:
+                    item.status='available'
+                    seconds = item.auction_length * 60
+                    item.auction_end = current_time + seconds
+                    db.session.add(item)
+                    db.session.commit()
 
         pending_items = Item.query.filter_by(status='pending').all()
         if not pending_items:
