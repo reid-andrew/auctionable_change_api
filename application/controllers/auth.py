@@ -67,9 +67,9 @@ class LogoutResources(Resource):
         else:
             auth_token = ''
         if auth_token:
-            # resp = User.decode_auth_token(self, auth_token=auth_token)
-            token = Token.query.filter_by(token=auth_token).first()
-            if token is not None:
+            token_check = User.decode_auth_token(self, auth_token=auth_token)
+            if isinstance(token_check, int):
+                token = Token.query.filter_by(token=auth_token).first()
                 db.session.delete(token)
                 db.session.commit()
                 response_object = {

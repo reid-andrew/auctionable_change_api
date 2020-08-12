@@ -34,7 +34,7 @@ class User(db.Model):
         try:
             payload = {
                 'iat': datetime.utcnow(),
-                'sub': user_id
+                'sub': int(user_id)
             }
             token = jwt.encode(
                 payload,
@@ -53,17 +53,17 @@ class User(db.Model):
         :return: integer|string
         """
 
-        try:
-            payload = jwt.decode(auth_token, os.getenv('TOKEN_SECRET_KEY'))
-            is_token = Token.check_blacklist(self, auth_token=auth_token)
-            if is_token:
-                return 'Token blacklisted. Please log in again.'
-            else:
-                return payload['sub']
-        except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
-        except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+        # try:
+        payload = jwt.decode(auth_token, os.getenv('TOKEN_SECRET_KEY'))
+        is_token = Token.check_token(self, auth_token=auth_token)
+        if not is_token:
+            return 'Token expired. Please log in again.'
+        else:
+            return payload['sub']
+        # except jwt.ExpiredSignatureError:
+        #     return 'Signature expired. Please log in again.'
+        # except jwt.InvalidTokenError:
+        #     return 'Invalid token. Please log in again.'
 
     def __repr__(self):
         return '<id {}>'.format(self.id)

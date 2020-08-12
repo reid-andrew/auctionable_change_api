@@ -1,10 +1,5 @@
 from datetime import datetime, timedelta
-from math import trunc
-from application import db, app_config
-from flask_login import UserMixin
-from passlib.apps import custom_app_context as pwd_context
-import jwt
-import os
+from application import db
 
 
 class Token(db.Model):
@@ -14,15 +9,12 @@ class Token(db.Model):
     token = db.Column(db.String, unique=True)
     expiry = db.Column(db.DateTime)
 
-    # def __init__(self, token):
-    #     self.token = token
-    #     self.expiry = datetime.now()
-
-    def check_blacklist(self, auth_token):
-        # check whether auth token has been blacklisted
-        res = Token.query.filter_by(token=str(auth_token)).first()
-        if res:
-            return True
+    def check_token(self, auth_token):
+        token = Token.query.filter_by(token=str(auth_token)).first()
+        if token:
+            current_time = datetime.now()
+            if token.expiry - current_time > timedelta(days=1):
+                return True
         else:
             return False
 
