@@ -15,6 +15,7 @@ class User(db.Model):
     last_name = db.Column(db.String())
     email = db.Column(db.String())
     password = db.Column(db.String())
+    admin = db.Column(db.Boolean(), default=False)
     created_at = db.Column(db.BigInteger())
 
     bids = db.relationship('Bid', backref='users', lazy='select')

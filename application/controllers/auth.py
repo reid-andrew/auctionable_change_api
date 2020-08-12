@@ -3,6 +3,8 @@ from flask_restful import fields, marshal
 from application.models.user import User
 from flask_login import current_user, login_user
 from flask import abort, make_response, jsonify, request
+from application.models.blacklist_token import BlacklistToken
+from application import db
 
 auth_fields = {
     'id': fields.Integer,
