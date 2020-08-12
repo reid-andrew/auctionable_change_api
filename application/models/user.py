@@ -1,10 +1,9 @@
-from datetime import datetime, timedelta
-from math import trunc
-from application import db, app_config
-from flask_login import UserMixin
+from datetime import datetime
+from application import db
 from passlib.apps import custom_app_context as pwd_context
 import jwt
 import os
+from application.models.token import Token
 
 
 class User(db.Model):
@@ -34,27 +33,33 @@ class User(db.Model):
         """
         try:
             payload = {
-                'exp': datetime.utcnow() + timedelta(days=0, seconds=5),
                 'iat': datetime.utcnow(),
                 'sub': user_id
             }
-            return jwt.encode(
+            token = jwt.encode(
                 payload,
                 os.getenv('TOKEN_SECRET_KEY'),
                 algorithm='HS256'
             )
+
+            return token
         except Exception as e:
             return e
 
     def decode_auth_token(self, auth_token):
         """
-        Decodes the auth token
+        Validates the auth token
         :param auth_token:
         :return: integer|string
         """
+
         try:
             payload = jwt.decode(auth_token, os.getenv('TOKEN_SECRET_KEY'))
-            return payload['sub']
+            is_token = Token.check_blacklist(self, auth_token=auth_token)
+            if is_token:
+                return 'Token blacklisted. Please log in again.'
+            else:
+                return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
