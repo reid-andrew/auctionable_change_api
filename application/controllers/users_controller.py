@@ -11,6 +11,7 @@ user_fields = {
     'first_name': fields.String,
     'last_name': fields.String,
     'email': fields.String,
+    'admin': fields.Boolean,
     'created_at': fields.Integer,
     'bids': fields.List(
         fields.Nested(
@@ -79,6 +80,12 @@ user_post_parser.add_argument(
     help='password parameter is required'
 )
 user_post_parser.add_argument(
+    'admin',
+    type=bool,
+    required=False,
+    location=['json']
+)
+user_post_parser.add_argument(
     'created_at',
     type=int,
     required=False,
@@ -131,6 +138,8 @@ class UserResources(Resource):
                 user.email = request.json['email']
             if 'password' in request.json:
                 user.password = request.json['password']
+            if 'admin' in request.json:
+                user.admin = request.json['admin']
 
             db.session.commit()
             return user
