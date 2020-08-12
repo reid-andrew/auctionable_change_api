@@ -47,23 +47,12 @@ class User(db.Model):
             return e
 
     def decode_auth_token(self, auth_token):
-        """
-        Validates the auth token
-        :param auth_token:
-        :return: integer|string
-        """
-
-        # try:
         payload = jwt.decode(auth_token, os.getenv('TOKEN_SECRET_KEY'))
         is_token = Token.check_token(self, auth_token=auth_token)
         if not is_token:
             return 'Token expired. Please log in again.'
         else:
             return payload['sub']
-        # except jwt.ExpiredSignatureError:
-        #     return 'Signature expired. Please log in again.'
-        # except jwt.InvalidTokenError:
-        #     return 'Invalid token. Please log in again.'
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
