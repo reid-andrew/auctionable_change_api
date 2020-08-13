@@ -11,7 +11,7 @@ user_fields = {
     'first_name': fields.String,
     'last_name': fields.String,
     'email': fields.String,
-    'password': fields.String,
+    'admin': fields.Boolean,
     'created_at': fields.Integer,
     'bids': fields.List(
         fields.Nested(
@@ -80,6 +80,12 @@ user_post_parser.add_argument(
     help='password parameter is required'
 )
 user_post_parser.add_argument(
+    'admin',
+    type=bool,
+    required=False,
+    location=['json']
+)
+user_post_parser.add_argument(
     'created_at',
     type=int,
     required=False,
@@ -104,8 +110,13 @@ class UserResources(Resource):
 
     @marshal_with(user_fields)
     def post(self):
+        email = request.json.get('email')
+        password = request.json.get('password')
+        if User.query.filter_by(email=email).first() is not None:
+            abort(400, description='Email already in use')
         args = user_post_parser.parse_args()
         user = User(**args)
+        user.hash_password(password)
         dt = trunc(datetime.now().timestamp())
         user.created_at = dt
         db.session.add(user)
@@ -127,6 +138,8 @@ class UserResources(Resource):
                 user.email = request.json['email']
             if 'password' in request.json:
                 user.password = request.json['password']
+            if 'admin' in request.json:
+                user.admin = request.json['admin']
 
             db.session.commit()
             return user

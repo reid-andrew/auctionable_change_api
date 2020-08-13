@@ -4,7 +4,6 @@ from flask_restful import Api
 from flask_cors import CORS
 from application.config import app_config
 from flask_swagger_ui import get_swaggerui_blueprint
-import application.static
 
 db = SQLAlchemy()
 
@@ -48,7 +47,8 @@ def create_app(config_name):
     from application.controllers.items.sold_controller import SoldItemResources
     from application.controllers.items.winners_controller import WinnerResources
     from application.controllers.bids.winners_controller import WinnerBidResources
-
+    from application.controllers.auth import LoginResources
+    from application.controllers.auth import LogoutResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(AvailableItemResources, '/items/available')
@@ -61,5 +61,7 @@ def create_app(config_name):
     api.add_resource(CharityResources, '/charities', '/charities/<string:search_term>')
     api.add_resource(BidDetailResources, '/bid_details', '/bid_details/<int:bid_detail_id>')
     api.add_resource(UserResources, '/users', '/users/<int:user_id>')
+    api.add_resource(LoginResources, '/login')
+    api.add_resource(LogoutResources, '/logout')
 
     return app
