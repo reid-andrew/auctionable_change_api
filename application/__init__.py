@@ -4,18 +4,12 @@ from flask_restful import Api
 from flask_cors import CORS
 from application.config import app_config
 from flask_swagger_ui import get_swaggerui_blueprint
-from flask_login import LoginManager
 
 db = SQLAlchemy()
 
 
 def create_app(config_name):
     app = Flask(__name__)
-    login = LoginManager(app)
-
-    @login.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
     CORS(app)
 
     SWAGGER_URL = '/swagger'
