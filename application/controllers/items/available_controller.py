@@ -1,11 +1,6 @@
-from math import trunc
-from application import db
-from flask import request, abort
 from flask_restful import Resource, reqparse
-from flask_restful import fields, marshal_with, marshal
+from flask_restful import fields, marshal
 from application.models.item import Item
-from application.models.user import User
-from datetime import datetime
 
 item_fields = {
     'id': fields.Integer,
@@ -137,8 +132,9 @@ item_post_parser.add_argument(
     location=['json']
 )
 
+
 class AvailableItemResources(Resource):
-    def get(self, item_id=None):
+    def get(self):
         items = Item.query.filter_by(status='available').all()
         return marshal({
             'count': len(items),
