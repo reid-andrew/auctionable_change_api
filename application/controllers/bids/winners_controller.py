@@ -1,12 +1,6 @@
-from math import trunc
-from application import db
-from flask import request, abort
 from flask_restful import Resource, reqparse
-from flask_restful import fields, marshal_with, marshal
+from flask_restful import fields, marshal
 from application.models.bid import Bid
-from application.models.item import Item
-from application.models.user import User
-from datetime import datetime
 
 bid_fields = {
     'id': fields.Integer,
@@ -57,8 +51,9 @@ bid_post_parser.add_argument(
     location=['json']
 )
 
+
 class WinnerBidResources(Resource):
-    def get(self, bid_id=None):
+    def get(self):
         bids = Bid.query.filter_by(winner=True).all()
         return marshal({
             'count': len(bids),

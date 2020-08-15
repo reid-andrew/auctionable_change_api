@@ -1,10 +1,9 @@
 from application import db
-from application.models.user import User
 from application.models.item import Item
 from application.models.bid import Bid
-from flask import request, abort
+from flask import abort
 from flask_restful import Resource, reqparse
-from flask_restful import fields, marshal_with, marshal
+from flask_restful import fields, marshal
 from datetime import datetime
 from math import trunc
 
@@ -138,12 +137,13 @@ item_post_parser.add_argument(
     location=['json']
 )
 
+
 class WinnerResources(Resource):
     def post(self):
         current_time = trunc(datetime.now().timestamp())
-        available_items = Item.query.filter(Item.status=='available',
-                                            Item.auction_end<=current_time,
-                                            Item.bids!=None).all()
+        available_items = Item.query.filter(Item.status == 'available',
+                                            Item.auction_end <= current_time,
+                                            Item.bids is not None).all()
         if not available_items:
             abort(404, description='No pending winners')
         else:
@@ -160,14 +160,14 @@ class WinnerResources(Resource):
 
                 winner = Bid.query.filter_by(id=pending_winner).first()
                 if winner:
-                    item.status='pending'
+                    item.status = 'pending'
                     db.session.add(item)
 
                     winner.winner = True
                     db.session.add(winner)
                     db.session.commit()
                 else:
-                    item.status='available'
+                    item.status = 'available'
                     seconds = item.auction_length * 60
                     item.auction_end = current_time + seconds
                     db.session.add(item)

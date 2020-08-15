@@ -47,8 +47,8 @@ def create_app(config_name):
     from application.controllers.items.sold_controller import SoldItemResources
     from application.controllers.items.winners_controller import WinnerResources
     from application.controllers.bids.winners_controller import WinnerBidResources
-    from application.controllers.auth import LoginResources
-    from application.controllers.auth import LogoutResources
+    from application.controllers.auth_controller import LoginResources
+    from application.controllers.auth_controller import LogoutResources
 
     api.add_resource(WelcomeResources, '/')
     api.add_resource(AvailableItemResources, '/items/available')
