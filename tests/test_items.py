@@ -105,6 +105,60 @@ class TestItems(unittest.TestCase):
 
         self.assertEquals(response.status, "404 NOT FOUND")
 
+    def test_get_available_items(self):
+        response = self.test_app.get(
+            '/items/available',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 2)
+        self.assertEquals(payload['items'][0]['title'], 'Tea Set')
+        self.assertEquals(payload['items'][0]['charity'], 'Big Cat Rescue')
+        self.assertEquals(payload['items'][-1]['price'], 40.00)
+        self.assertEquals(payload['items'][-1]['status'], 'available')
+
+    def test_get_pending_items(self):
+        response = self.test_app.put(
+            '/items/1',
+            json={
+                'status': 'pending'
+            },
+            follow_redirects=True
+        )
+
+        response = self.test_app.get(
+            '/items/pending',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 1)
+        self.assertEquals(payload['items'][0]['title'], 'Tea Set')
+        self.assertEquals(payload['items'][0]['charity'], 'Big Cat Rescue')
+
+    def test_get_sold_items(self):
+        response = self.test_app.put(
+            '/items/1',
+            json={
+                'status': 'sold'
+            },
+            follow_redirects=True
+        )
+
+        response = self.test_app.get(
+            '/items/sold',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 1)
+        self.assertEquals(payload['items'][0]['title'], 'Tea Set')
+        self.assertEquals(payload['items'][0]['charity'], 'Big Cat Rescue')
+
     def test_create_items(self):
         response = self.test_app.post(
             '/items',
