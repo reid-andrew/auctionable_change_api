@@ -54,31 +54,5 @@ class TestUsers(unittest.TestCase):
         self.assertEquals(payload['message'], 'Username or password incorrect')
         self.assertEquals(response.status_code, 400)
 
-    def test_valid_logout(self):
-        user_login = self.test_app.post(
-            '/login',
-            json={
-                'email': 'jm@example.com',
-                'password': '12345'
-            },
-            follow_redirects=True
-        )
-        payload = json.loads(user_login.data)
-        self.assertEquals(payload['message'], 'Successfully logged in.')
-        self.assertTrue(payload['user_token'])
-        self.assertEquals(user_login.status_code, 200)
-
-        response = self.test_app.post(
-            '/logout',
-            headers=dict(
-                Authorization='Bearer ' + json.loads(
-                    user_login.data.decode()
-                )['user_token']
-            )
-        )
-        payload = json.loads(response.data)
-        self.assertEquals(payload['message'], 'Successfully logged out.')
-        self.assertEquals(response.status_code, 200)
-
     if __name__ == "__main__":
             unittest.main()
