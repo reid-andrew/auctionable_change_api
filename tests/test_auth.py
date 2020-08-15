@@ -2,7 +2,7 @@ import unittest
 import json
 from application import create_app, db
 from application.models.user import User
-import time
+
 
 class TestUsers(unittest.TestCase):
     def setUp(self):
