@@ -56,7 +56,7 @@ FE Repo: https://github.com/Auctionable-Change/auctionable_change
 
 #### Database Setup
 
-![Screenshot](public/AC_tables_7-26-20.png)
+![Screenshot](public/ac_tables_v3.png)
 - Run the Alembic migrations to add tables to database:
   ```
   python manage.py db migrate
