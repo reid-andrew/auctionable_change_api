@@ -1,12 +1,14 @@
 import unittest
 import json
 from application import create_app, db
-from application.models.bid import Bid
 from application.models.item import Item
 from application.models.user import User
+from application.models.bid import Bid
+from datetime import datetime
+from math import trunc
 
 
-class TestBids(unittest.TestCase):
+class TestItems(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.test_app = self.app.test_client()
@@ -14,9 +16,9 @@ class TestBids(unittest.TestCase):
             db.create_all()
 
         user = User(
-            first_name="Johnny",
-            last_name="McSellingstuff",
-            email="jm@example.com",
+            first_name="Jimmy",
+            last_name="Cocopuff",
+            email="jc@example.com",
             password="12345"
         )
         with self.app.app_context():
@@ -24,9 +26,9 @@ class TestBids(unittest.TestCase):
             db.session.commit()
 
         user = User(
-            first_name="Jose",
-            last_name="De Los Buyingstuff",
-            email="jd@example.com",
+            first_name="Jimmy",
+            last_name="Cocobeans",
+            email="jb@example.com",
             password="12345"
         )
         with self.app.app_context():
@@ -34,9 +36,9 @@ class TestBids(unittest.TestCase):
             db.session.commit()
 
         user = User(
-            first_name="Jacques",
-            last_name="Du Purchaser",
-            email="jdp@example.com",
+            first_name="Jimmy",
+            last_name="Jimmy",
+            email="jj@example.com",
             password="12345"
         )
         with self.app.app_context():
@@ -54,7 +56,7 @@ class TestBids(unittest.TestCase):
             charity_score=4,
             charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
             image="img.ul",
-            auction_length=5
+            auction_end=trunc(datetime.now().timestamp()) - 5
           )
         with self.app.app_context():
             db.session.add(item)
@@ -71,7 +73,7 @@ class TestBids(unittest.TestCase):
           charity_score=4,
           charity_score_image="https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png",
           image='img.ul',
-          auction_length=5
+          auction_end=trunc(datetime.now().timestamp()) - 5
           )
         with self.app.app_context():
             db.session.add(item)
@@ -87,9 +89,9 @@ class TestBids(unittest.TestCase):
             db.session.commit()
 
         bid = Bid(
-          item_id=1,
-          user_id=3,
-          amount=400.00,
+            item_id=1,
+            user_id=3,
+            amount=350.00
           )
         with self.app.app_context():
             db.session.add(bid)
@@ -100,136 +102,9 @@ class TestBids(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
-    def test_get_all_bids(self):
+    def test_winners_are_declared(self):
         response = self.test_app.get(
-            '/bids',
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "200 OK")
-        payload = json.loads(response.data)
-        self.assertEquals(payload['count'], 2)
-        self.assertEquals(payload['bids'][0]['user_id'], 2)
-        self.assertEquals(payload['bids'][0]['amount'], 300.00)
-        self.assertEquals(payload['bids'][0]['winner'], False)
-        self.assertEquals(payload['bids'][-1]['user_id'], 3)
-        self.assertEquals(payload['bids'][-1]['amount'], 400.00)
-
-    def test_get_one_bid(self):
-        response = self.test_app.get(
-            '/bids/2',
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "200 OK")
-        payload = json.loads(response.data)
-        self.assertEquals(payload['id'], 2)
-        self.assertEquals(payload['user_id'], 3)
-        self.assertEquals(payload['amount'], 400.00)
-        self.assertEquals(payload['winner'], False)
-
-    def test_sad_path_for_nonexistent_bid(self):
-        response = self.test_app.get(
-            '/bids/10',
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "404 NOT FOUND")
-
-    def test_create_bids(self):
-        response = self.test_app.post(
-            '/bids',
-            json={
-                'item_id': 1,
-                'user_id': 2,
-                'amount': 500.00
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "200 OK")
-        payload = json.loads(response.data)
-        self.assertEquals(payload['user_id'], 2)
-        self.assertEquals(payload['amount'], 500.00)
-        self.assertEquals(payload['winner'], False)
-
-    def test_sad_path_for_create_bid_with_missing_info(self):
-        response = self.test_app.post(
-            '/bids',
-            json={
-                'item_id': 1,
-                'amount': 500.00
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "400 BAD REQUEST")
-
-    def test_sad_path_for_create_bid_with_nonexistent_item(self):
-        response = self.test_app.post(
-            '/bids',
-            json={
-                'item_id': 1111,
-                'user_id': 2,
-                'amount': 500.00
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "404 NOT FOUND")
-
-    def test_update_bids_only_updates_selected_fields(self):
-        response = self.test_app.put(
-            '/bids/1',
-            json={
-                'user_id': 3,
-                'amount': 999.15
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "200 OK")
-        payload = json.loads(response.data)
-        self.assertEquals(payload['user_id'], 3)
-        self.assertEquals(payload['amount'], 999.15)
-        self.assertEquals(payload['item_id'], 1)
-        self.assertEquals(payload['winner'], False)
-
-    def test_update_can_update_all_fields(self):
-        response = self.test_app.put(
-            '/bids/1',
-            json={
-                'item_id': 2,
-                'user_id': 3,
-                'amount': 500.00,
-                'winner': True
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "200 OK")
-        payload = json.loads(response.data)
-        self.assertEquals(payload['item_id'], 2)
-        self.assertEquals(payload['user_id'], 3)
-        self.assertEquals(payload['amount'], 500.00)
-        self.assertEquals(payload['winner'], True)
-
-    def test_sad_path_for_update_bid(self):
-        response = self.test_app.put(
-            '/bids/1111',
-            json={
-                'item_id': 2,
-                'user_id': 3,
-                'amount': 500.00
-            },
-            follow_redirects=True
-        )
-
-        self.assertEquals(response.status, "404 NOT FOUND")
-
-    def test_delete_bid(self):
-        response = self.test_app.get(
-            '/bids',
+            '/items/available',
             follow_redirects=True
         )
 
@@ -237,17 +112,24 @@ class TestBids(unittest.TestCase):
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 2)
 
-        response = self.test_app.delete(
-            '/bids/2',
+        response = self.test_app.get(
+            '/items/pending',
             follow_redirects=True
         )
 
         self.assertEquals(response.status, "200 OK")
         payload = json.loads(response.data)
-        self.assertEquals(payload['id'], 2)
+        self.assertEquals(payload['count'], 0)
+
+        response = self.test_app.post(
+            '/items/winners',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
 
         response = self.test_app.get(
-            '/bids',
+            '/items/available',
             follow_redirects=True
         )
 
@@ -255,14 +137,73 @@ class TestBids(unittest.TestCase):
         payload = json.loads(response.data)
         self.assertEquals(payload['count'], 1)
 
-    def test_sad_path_for_delete_item(self):
-        response = self.test_app.delete(
-            '/bids/11111',
+        response = self.test_app.get(
+            '/items/pending',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 1)
+        self.assertEquals(payload['items'][0]['bids'][0]['winner'], False)
+        self.assertEquals(payload['items'][0]['bids'][-1]['winner'], True)
+
+    def test_no_pending_winners_is_handled(self):
+        response = self.test_app.post(
+            '/items/winners',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+
+        response = self.test_app.post(
+            '/items/winners',
             follow_redirects=True
         )
 
         self.assertEquals(response.status, "404 NOT FOUND")
 
+    def test_no_bids_above_price_reschedules_election(self):
+        response = self.test_app.put(
+            '/bids/1',
+            json={
+                'amount': 1.00
+            },
+            follow_redirects=True
+        )
+
+        response = self.test_app.put(
+            '/bids/2',
+            json={
+                'amount': 1.00
+            },
+            follow_redirects=True
+        )
+
+        response = self.test_app.post(
+            '/items/winners',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "404 NOT FOUND")
+
+        response = self.test_app.get(
+            '/items/available',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 2)
+
+        response = self.test_app.get(
+            '/items/pending',
+            follow_redirects=True
+        )
+
+        self.assertEquals(response.status, "200 OK")
+        payload = json.loads(response.data)
+        self.assertEquals(payload['count'], 0)        
 
 if __name__ == "__main__":
     unittest.main()

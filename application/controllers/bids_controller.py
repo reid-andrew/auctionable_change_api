@@ -1,21 +1,20 @@
+from math import trunc
 from application import db
 from flask import request, abort
 from flask_restful import Resource, reqparse
 from flask_restful import fields, marshal_with, marshal
 from application.models.bid import Bid
 from application.models.item import Item
+from application.models.user import User
+from datetime import datetime
 
 bid_fields = {
     'id': fields.Integer,
     'item_id': fields.Integer,
-    'bidder_name': fields.String,
-    'bidder_email': fields.String,
+    'user_id': fields.Integer,
     'amount': fields.Float,
-    'street_address': fields.String,
-    'city': fields.String,
-    'state': fields.String,
-    'zip_code': fields.String,
-    'receipt': fields.String
+    'winner': fields.Boolean,
+    'created_at': fields.Integer,
 }
 
 bid_list_fields = {
@@ -32,18 +31,11 @@ bid_post_parser.add_argument(
     help='item_id parameter is required'
 )
 bid_post_parser.add_argument(
-    'bidder_name',
-    type=str,
+    'user_id',
+    type=int,
     required=True,
     location=['json'],
-    help='bidder_name parameter is required'
-)
-bid_post_parser.add_argument(
-    'bidder_email',
-    type=str,
-    required=True,
-    location=['json'],
-    help='bidder_email parameter is required'
+    help='user_id parameter is required'
 )
 bid_post_parser.add_argument(
     'amount',
@@ -53,39 +45,16 @@ bid_post_parser.add_argument(
     help='amount parameter is required'
 )
 bid_post_parser.add_argument(
-    'street_address',
-    type=str,
-    required=True,
-    location=['json'],
-    help='street_address parameter is required'
+    'winner',
+    type=bool,
+    required=False,
+    location=['json']
 )
 bid_post_parser.add_argument(
-    'city',
-    type=str,
-    required=True,
-    location=['json'],
-    help='city parameter is required'
-)
-bid_post_parser.add_argument(
-    'state',
-    type=str,
-    required=True,
-    location=['json'],
-    help='state parameter is required'
-)
-bid_post_parser.add_argument(
-    'zip_code',
-    type=str,
-    required=True,
-    location=['json'],
-    help='zip_code parameter is required'
-)
-bid_post_parser.add_argument(
-    'receipt',
-    type=str,
-    required=True,
-    location=['json'],
-    help='receipt parameter is required'
+    'created_at',
+    type=int,
+    required=False,
+    location=['json']
 )
 
 
@@ -109,10 +78,14 @@ class BidResources(Resource):
         args = bid_post_parser.parse_args()
 
         item = Item.query.filter_by(id=args["item_id"]).first()
-        if not item:
-            abort(404, description='That item does not exist')
+        user = User.query.filter_by(id=args["user_id"]).first()
+
+        if not item or not user:
+            abort(404, description='That item or user does not exist')
         else:
             bid = Bid(**args)
+            dt = trunc(datetime.now().timestamp())
+            bid.created_at = dt
             db.session.add(bid)
             db.session.commit()
 
@@ -124,22 +97,14 @@ class BidResources(Resource):
         if not bid:
             abort(404, description='That bid does not exist')
         else:
-            if 'bidder_name' in request.json:
-                bid.bidder_name = request.json['bidder_name']
-            if 'bidder_email' in request.json:
-                bid.bidder_email = request.json['bidder_email']
+            if 'user_id' in request.json:
+                bid.user_id = request.json['user_id']
+            if 'item_id' in request.json:
+                bid.item_id = request.json['item_id']
             if 'amount' in request.json:
                 bid.amount = request.json['amount']
-            if 'street_address' in request.json:
-                bid.street_address = request.json['street_address']
-            if 'city' in request.json:
-                bid.city = request.json['city']
-            if 'state' in request.json:
-                bid.state = request.json['state']
-            if 'zip_code' in request.json:
-                bid.zip_code = request.json['zip_code']
-            if 'receipt' in request.json:
-                bid.receipt = request.json['receipt']
+            if 'winner' in request.json:
+                bid.winner = request.json['winner']
 
             db.session.commit()
             return bid

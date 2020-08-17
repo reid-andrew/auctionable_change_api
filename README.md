@@ -4,7 +4,7 @@
 
 **Auctionable Change API** is the backend API for our [Turing School of Software and Design](https://turing.io/) capstone project, **Auctionable Change**.
 
-The idea behind **A.change** is creating a platform in which an individual can post an item for sale/auction, set a minimum asking price and then select a charity to which the funds from that item's sale would be donated.
+The idea behind **A.change** is creating a platform in which an individual can donate to charity even when funds are low. A seller would post an unwanted or unneeded item for auction, set a minimum bid and then select a charity to which the funds from that item's auction would be donated. A bidder would then select an item and imput an amount greater than the minimum bid. After the alloted time frame a winning bidder is chosen and they are directed to place a donation at the proper charity, upload proof, and send shipping details to the seller so they may receive the item. All users must register and login to sell or bid to keep records of past and current bids. 
 
 This **API** functions to consume a charity listing/ranking API and return that information to the front end, as well as provide full endpoints for creating, maintaining and accessing information within the database.
 
