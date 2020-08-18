@@ -19,6 +19,8 @@ tags:
     description: Endpoints for Item CRUD
   - name: Bids
     description: Endpoints for Bid CRUD
+  - name: Bid Details
+    description: Endpoints for Bid CRUD
   - name: Charities
     description: Endpoints for querying Charity Navigator
 paths:
@@ -326,6 +328,122 @@ paths:
 
         '400':
           description: Bad Request
+  /bid_details:
+      get:
+        summary: Returns a list of available bid details.
+        tags:
+          - Bid Details
+        responses:
+          '200':    # status code
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BidDetails'
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/BidDetails'
+          '400':
+            description: Bad Request
+      post:
+        summary: Creates a new bid detail.
+        tags:
+          - Bid Details
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetailsRequest'
+              examples:
+                BidRequest:
+                  $ref: '#/components/examples/BidDetailsRequest'
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BidDetail'
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/BidDetail'
+          '400':
+            description: Bad Request
+  /bid_details/{bid_detail_id}:
+    get:
+      summary: Returns a selected bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to get
+      tags:
+        - Bid Details
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid Detail not found
+    put:
+      summary: Updates a selected bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to update
+      tags:
+        - Bid Details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BidDetailsRequest'
+            examples:
+              BidRequest:
+                $ref: '#/components/examples/BidDetailsRequest'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid Detail not found
+    delete:
+      summary: Removes a bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to delete
+      tags:
+        - Bid Details
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid detail not found
   /charities:
     get:
       summary: Returns a list of rated charities from Charity Navigator.
@@ -452,13 +570,40 @@ components:
           type: integer
         item_id:
           type: integer
-        bidder_name:
-          type: string
-        bidder_email:
-          type: string
+        user_id:
+          type: integer
         amount:
           type: number
           format: float
+        winner:
+          type: boolean
+        created_at:
+          type: integer
+    BidRequest:
+      type: object
+      properties:
+        item_id:
+          type: integer
+        user_id:
+          type: integer
+        amount:
+          type: number
+          format: float
+    BidDetails:
+      properties:
+        count:
+          type: integer
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/BidDetail'
+    BidDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        bid_id:
+          type: integer
         street_address:
           type: string
         city:
@@ -469,18 +614,13 @@ components:
           type: string
         receipt:
           type: string
-    BidRequest:
+        created_at:
+          type: integer
+    BidDetailsRequest:
       type: object
       properties:
-        item_id:
+        bid_id:
           type: integer
-        bidder_name:
-          type: string
-        bidder_email:
-          type: string
-        amount:
-          type: number
-          format: float
         street_address:
           type: string
         city:
@@ -588,61 +728,83 @@ components:
         count: 2
         bids:
         - id: 1
-          bidder_name: Johnny McBuyingstuff
-          bidder_email: jmb@example.com
-          amount: 99.99
+          item_id: 1
+          user_id: 3
+          amount: 12.99
+          winner: true
+          created_at: 1597265957
+        - id: 2
+          item_id: 1
+          user_id: 2
+          amount: 10.99
+          winner: false
+          created_at: 1597265959
+    Bid:
+      value:
+        id: 1
+        item_id: 1
+        user_id: 3
+        amount: 10.99
+        winner: false
+        created_at: 1597265957
+      summary: Sample bid object
+    BidRequest:
+      value:
+        item_id: 1
+        user_id: 3
+      summary: Sample bid object
+    BidDetails:
+      value:
+        count: 2
+        bid_details:
+        - id: 1
+          bid_id: 5
           street_address: 123 Main St.
           city: Coshocton
           state: OH
           zip_code: 43812
           receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-          item_id: 1
+          created_at: 1597266009
         - id: 2
-          bidder_name: Sally Simpson
-          bidder_email: sally@example.com
-          amount: 55.55
+          bid_id: 5
           street_address: 456 Main St.
           city: Coshocton
           state: OH
           zip_code: 43812
           receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-          item_id: 2
-    Bid:
+          created_at: 1597266011
+      summary: Sample bid details object
+    BidDetail:
       value:
-        id: 1
-        bidder_name: Johnny McBuyingstuff
-        bidder_email: jmb@example.com
-        amount: 99.99
-        street_address: 123 Main St.
+        id: 2
+        bid_id: 5
+        street_address: 456 Main St.
         city: Coshocton
         state: OH
         zip_code: 43812
         receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-        item_id: 1
-      summary: Sample bid object
-    BidRequest:
+        created_at: 1597266011
+      summary: Sample bid details object
+    BidDetailsRequest:
       value:
-        bidder_name: Johnny McBuyingstuff
-        bidder_email: jmb@example.com
-        amount: 99.99
-        street_address: 123 Main St.
+        bid_id: 5
+        street_address: 456 Main St.
         city: Coshocton
         state: OH
         zip_code: 43812
         receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-        item_id: 1
-      summary: Sample bid object
+      summary: Sample bid details object
     Charities:
       value:
         count: 2
         charities:
-        - id: 593330495
-          url: https://www.charitynavigator.org/?bay=search.summary&orgid=8804&utm_source=DataAPI&utm_content=6bc9f3c8
-          name: "Big Cat Rescue"
-          rating: 4
-          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
-        - id: 911726410
-          url: https://www.charitynavigator.org/?bay=search.summary&orgid=18675&utm_source=DataAPI&utm_content=6bc9f3c8
-          name: "Whatcom Community Foundation"
-          rating: 4
-          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+          - id: 593330495
+            url: https://www.charitynavigator.org/?bay=search.summary&orgid=8804&utm_source=DataAPI&utm_content=6bc9f3c8
+            name: "Big Cat Rescue"
+            rating: 4
+            rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+          - id: 911726410
+            url: https://www.charitynavigator.org/?bay=search.summary&orgid=18675&utm_source=DataAPI&utm_content=6bc9f3c8
+            name: "Whatcom Community Foundation"
+            rating: 4
+            rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
