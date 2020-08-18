@@ -15,6 +15,8 @@ servers:
   - url: http://127.0.0.1:5000
     description: Local (development) server
 tags:
+  - name: Users
+    description: Endpoints for User CRUD
   - name: Items
     description: Endpoints for Item CRUD
   - name: Bids
@@ -24,6 +26,126 @@ tags:
   - name: Charities
     description: Endpoints for querying Charity Navigator
 paths:
+  /users:
+    get:
+      summary: Returns a list of all users.
+      tags:
+        - Users
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Users'
+
+        '400':
+          description: Bad Request
+    post:
+      summary: Creates a new user.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+            examples:
+              UserRequest:
+                $ref: '#/components/examples/UserRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+        '400':
+          description: Bad Request
+  /users/{user_id}:
+    get:
+      summary: Returns a selected user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - Users
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+
+        '404':
+          description: User not found
+    put:
+      summary: Updates a selected user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to update
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              User:
+                $ref: '#/components/examples/User'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            examples:
+              User:
+                $ref: '#/components/examples/User'
+        '404':
+          description: User not found
+    delete:
+      summary: Removes an user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to delete
+      tags:
+        - Users
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+        '403':
+          description: Cannot delete user with associated items or bids
+        '404':
+          description: User not found
   /items:
     get:
       summary: Returns a list of all items.
@@ -485,6 +607,46 @@ paths:
           description: Bad Request
 components:
   schemas:
+    Users:
+      properties:
+        count:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        admin:
+          type: string
+        created_at:
+          type: integer
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    UserRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
     Items:
       properties:
         count:
@@ -653,6 +815,38 @@ components:
           items:
             $ref: '#/components/schemas/Charity'
   examples:
+    Users:
+      value:
+        count: 2
+        users:
+        - id: 1
+          first_name: Joe
+          last_name: Strummer
+          email: clash@punk.rock
+          admin: null
+          created_at: 1597265957
+        - id: 2
+          first_name: Bruce
+          last_name: Springsteen
+          email: boss@rock.roll
+          admin: null
+          created_at: 1597265959
+      summary: Sample user object
+    User:
+      value:
+        id: 1
+        first_name: Joe
+        last_name: Strummer
+        email: clash@punk.rock
+        admin: null
+        created_at: 1597265957
+      summary: Sample user object
+    UserRequest:
+      value:
+        first_name: Joe
+        last_name: Strummer
+        email: clash@punk.rock
+      summary: Sample user object
     Items:
       value:
         count: 2
