@@ -14,7 +14,7 @@ This **API** functions to consume a charity listing/ranking API and return that 
 
 Try It!: [Swagger Endpoint Diagrams](https://auctionable-change-api.herokuapp.com/swagger)
 
-![Endpoints](public/swagger_endpoints.png)
+![Endpoints](public/swagger_v2.jpg)
 
 
 ## Application Links
