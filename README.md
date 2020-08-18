@@ -83,7 +83,7 @@ FE Repo: https://github.com/Auctionable-Change/auctionable_change
 ## Dev Team BE
 
  - Stephanie Friend ([GitHub](https://github.com/StephanieFriend), [LinkedIn](https://www.linkedin.com/in/s-friend/))
- - Kevin McGrevey ([GitHub](https://github.com/kmcgrevey), [LinkedIn](www.linkedin.com/in/‎kevinmcgrevey‎/))
+ - Kevin McGrevey ([GitHub](https://github.com/kmcgrevey), [LinkedIn](www.linkedin.com/in/%E2%80%8Ekevinmcgrevey%E2%80%8E/))
  - Andrew Reid ([GitHub](https://github.com/reid-andrew), [LinkedIn](https://www.linkedin.com/in/reida/))
 
  ## Technologies and Frameworks
