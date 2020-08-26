@@ -10,6 +10,9 @@ All **users** must register and login to sell or bid, keeping records of past an
 
 This **API** functions to consume a charity listing/ranking API and return that information to the front end, as well as provide full endpoints for creating, maintaining and accessing information within the database.
 
+## Demo
+A video demonstration of this application and the its development process can be viewed [here](https://www.youtube.com/watch?v=FA55tI6ek2g&feature=youtu.be). 
+
 ## Endpoints
 
 Try It!: [Swagger Endpoint Diagrams](https://auctionable-change-api.herokuapp.com/swagger)
