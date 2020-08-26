@@ -15,13 +15,137 @@ servers:
   - url: http://127.0.0.1:5000
     description: Local (development) server
 tags:
+  - name: Users
+    description: Endpoints for User CRUD
   - name: Items
     description: Endpoints for Item CRUD
   - name: Bids
     description: Endpoints for Bid CRUD
+  - name: Bid Details
+    description: Endpoints for Bid CRUD
   - name: Charities
     description: Endpoints for querying Charity Navigator
 paths:
+  /users:
+    get:
+      summary: Returns a list of all users.
+      tags:
+        - Users
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+              examples:
+                Item:
+                  $ref: '#/components/examples/Users'
+
+        '400':
+          description: Bad Request
+    post:
+      summary: Creates a new user.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+            examples:
+              UserRequest:
+                $ref: '#/components/examples/UserRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+        '400':
+          description: Bad Request
+  /users/{user_id}:
+    get:
+      summary: Returns a selected user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - Users
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+
+        '404':
+          description: User not found
+    put:
+      summary: Updates a selected user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to update
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              User:
+                $ref: '#/components/examples/User'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            examples:
+              User:
+                $ref: '#/components/examples/User'
+        '404':
+          description: User not found
+    delete:
+      summary: Removes an user.
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to delete
+      tags:
+        - Users
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                User:
+                  $ref: '#/components/examples/User'
+        '403':
+          description: Cannot delete user with associated items or bids
+        '404':
+          description: User not found
   /items:
     get:
       summary: Returns a list of all items.
@@ -326,6 +450,122 @@ paths:
 
         '400':
           description: Bad Request
+  /bid_details:
+      get:
+        summary: Returns a list of available bid details.
+        tags:
+          - Bid Details
+        responses:
+          '200':    # status code
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BidDetails'
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/BidDetails'
+          '400':
+            description: Bad Request
+      post:
+        summary: Creates a new bid detail.
+        tags:
+          - Bid Details
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetailsRequest'
+              examples:
+                BidRequest:
+                  $ref: '#/components/examples/BidDetailsRequest'
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BidDetail'
+                examples:
+                  Bid:
+                    $ref: '#/components/examples/BidDetail'
+          '400':
+            description: Bad Request
+  /bid_details/{bid_detail_id}:
+    get:
+      summary: Returns a selected bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to get
+      tags:
+        - Bid Details
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid Detail not found
+    put:
+      summary: Updates a selected bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to update
+      tags:
+        - Bid Details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BidDetailsRequest'
+            examples:
+              BidRequest:
+                $ref: '#/components/examples/BidDetailsRequest'
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid Detail not found
+    delete:
+      summary: Removes a bid detail.
+      parameters:
+        - in: path
+          name: bid_detail_id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the bid detail to delete
+      tags:
+        - Bid Details
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidDetail'
+              examples:
+                Bid:
+                  $ref: '#/components/examples/BidDetail'
+        '404':
+          description: Bid detail not found
   /charities:
     get:
       summary: Returns a list of rated charities from Charity Navigator.
@@ -367,6 +607,46 @@ paths:
           description: Bad Request
 components:
   schemas:
+    Users:
+      properties:
+        count:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        admin:
+          type: string
+        created_at:
+          type: integer
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    UserRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
     Items:
       properties:
         count:
@@ -380,6 +660,8 @@ components:
       properties:
         id:
           type: integer
+        user_id:
+          type: integer
         title:
           type: string
         description:
@@ -387,10 +669,6 @@ components:
         price:
           type: number
           format: float
-        donor:
-          type: string
-        donor_email:
-          type: string
         status:
           type: string
         category:
@@ -405,6 +683,12 @@ components:
           type: string
         image:
           type: string
+        auction_length:
+          type: integer
+        created_at:
+          type: integer
+        auction_end:
+          type: integer
         bids:
           type: array
           items:
@@ -412,6 +696,8 @@ components:
     ItemRequest:
       type: object
       properties:
+        user_id:
+          type: integer
         title:
           type: string
         description:
@@ -419,12 +705,6 @@ components:
         price:
           type: number
           format: float
-        donor:
-          type: string
-        donor_email:
-          type: string
-        status:
-          type: string
         category:
           type: string
         charity:
@@ -452,13 +732,40 @@ components:
           type: integer
         item_id:
           type: integer
-        bidder_name:
-          type: string
-        bidder_email:
-          type: string
+        user_id:
+          type: integer
         amount:
           type: number
           format: float
+        winner:
+          type: boolean
+        created_at:
+          type: integer
+    BidRequest:
+      type: object
+      properties:
+        item_id:
+          type: integer
+        user_id:
+          type: integer
+        amount:
+          type: number
+          format: float
+    BidDetails:
+      properties:
+        count:
+          type: integer
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/BidDetail'
+    BidDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        bid_id:
+          type: integer
         street_address:
           type: string
         city:
@@ -469,18 +776,13 @@ components:
           type: string
         receipt:
           type: string
-    BidRequest:
+        created_at:
+          type: integer
+    BidDetailsRequest:
       type: object
       properties:
-        item_id:
+        bid_id:
           type: integer
-        bidder_name:
-          type: string
-        bidder_email:
-          type: string
-        amount:
-          type: number
-          format: float
         street_address:
           type: string
         city:
@@ -513,60 +815,96 @@ components:
           items:
             $ref: '#/components/schemas/Charity'
   examples:
+    Users:
+      value:
+        count: 2
+        users:
+        - id: 1
+          first_name: Joe
+          last_name: Strummer
+          email: clash@punk.rock
+          admin: null
+          created_at: 1597265957
+        - id: 2
+          first_name: Bruce
+          last_name: Springsteen
+          email: boss@rock.roll
+          admin: null
+          created_at: 1597265959
+      summary: Sample user object
+    User:
+      value:
+        id: 1
+        first_name: Joe
+        last_name: Strummer
+        email: clash@punk.rock
+        admin: null
+        created_at: 1597265957
+      summary: Sample user object
+    UserRequest:
+      value:
+        first_name: Joe
+        last_name: Strummer
+        email: clash@punk.rock
+      summary: Sample user object
     Items:
       value:
         count: 2
         items:
         - id: 1
+          user_id: 1
           title: Photo
           description: Image of Johnny Cash
           price: 49.99
-          donor: Andrew Reid
-          donor_email: areid@example.com
+          status: available
           category: home
           charity: ProPublcia
           charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
           charity_score: 4
           charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
           image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+          auction_length: 5
+          created_at: 1597265936
+          auction_end: 1597266056
           bids: []
         - id: 2
+          user_id: 79
           title: Album
           description: The Clash London Calling
           price: 10.00
-          donor: Joe Strummer
-          donor_email: joestrummer@example.com
           category: home
           charity: Center for People in Need
           charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=12688&utm_source=DataAPI&utm_content=6bc9f3c8
           charity_score: 3
           charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/3stars.png
           image: https://img.discogs.com/HWBBtcFnGxd7ZOoN3wskQ8kh7ro=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-470912-1248752385.jpeg.jpg
+          auction_length: 5
+          created_at: 1597285976
+          auction_end: 1597466096
           bids:
-          - id: 2
-            bidder_name: Johnny McBuyingstuff
-            bidder_email: jmb@example.com
-            amount: 99.99
-            street_address: 123 Main St.
-            city: Coshocton
-            state: OH
-            zip_code: 43812
-            receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-            item_id: 1
+          - id: 1
+            item_id: 2
+            user_id: 3
+            amount: 12.99
+            winner: true
+            created_at: 1597265957
     Item:
       value:
         id: 1
+        user_id: 1
         title: Photo
         description: Image of Johnny Cash
         price: 49.99
-        donor: Andrew Reid
-        donor_email: areid@example.com
+        status: available
         category: home
         charity: ProPublcia
         charity_url: https://www.charitynavigator.org/?bay=search.summary&orgid=13005&utm_source=DataAPI&utm_content=6bc9f3c8
         charity_score: 4
         charity_score_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
         image: https://3w8dlo2orf8y3crtc22sslbh-wpengine.netdna-ssl.com/wp-content/uploads/2020/02/johnny-cash-1-.jpg
+        auction_length: 5
+        created_at: 1597265936
+        auction_end: 1597266056
         bids: []
       summary: Sample item object
     ItemRequest:
@@ -588,61 +926,83 @@ components:
         count: 2
         bids:
         - id: 1
-          bidder_name: Johnny McBuyingstuff
-          bidder_email: jmb@example.com
-          amount: 99.99
+          item_id: 1
+          user_id: 3
+          amount: 12.99
+          winner: true
+          created_at: 1597265957
+        - id: 2
+          item_id: 1
+          user_id: 2
+          amount: 10.99
+          winner: false
+          created_at: 1597265959
+    Bid:
+      value:
+        id: 1
+        item_id: 1
+        user_id: 3
+        amount: 10.99
+        winner: false
+        created_at: 1597265957
+      summary: Sample bid object
+    BidRequest:
+      value:
+        item_id: 1
+        user_id: 3
+      summary: Sample bid object
+    BidDetails:
+      value:
+        count: 2
+        bid_details:
+        - id: 1
+          bid_id: 5
           street_address: 123 Main St.
           city: Coshocton
           state: OH
           zip_code: 43812
           receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-          item_id: 1
+          created_at: 1597266009
         - id: 2
-          bidder_name: Sally Simpson
-          bidder_email: sally@example.com
-          amount: 55.55
+          bid_id: 5
           street_address: 456 Main St.
           city: Coshocton
           state: OH
           zip_code: 43812
           receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-          item_id: 2
-    Bid:
+          created_at: 1597266011
+      summary: Sample bid details object
+    BidDetail:
       value:
-        id: 1
-        bidder_name: Johnny McBuyingstuff
-        bidder_email: jmb@example.com
-        amount: 99.99
-        street_address: 123 Main St.
+        id: 2
+        bid_id: 5
+        street_address: 456 Main St.
         city: Coshocton
         state: OH
         zip_code: 43812
         receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-        item_id: 1
-      summary: Sample bid object
-    BidRequest:
+        created_at: 1597266011
+      summary: Sample bid details object
+    BidDetailsRequest:
       value:
-        bidder_name: Johnny McBuyingstuff
-        bidder_email: jmb@example.com
-        amount: 99.99
-        street_address: 123 Main St.
+        bid_id: 5
+        street_address: 456 Main St.
         city: Coshocton
         state: OH
         zip_code: 43812
         receipt: https://lh3.googleusercontent.com/proxy/ZawdSVwkLnl4q56J9ffJxuPhWvdJ4J0P8nJWNKdA8SKWo0_TYZjR4R8yu-yCAwl-CVHUdYKj8s65LofwLcVWpvqXrVO2xNku1050T9F7QFY
-        item_id: 1
-      summary: Sample bid object
+      summary: Sample bid details object
     Charities:
       value:
         count: 2
         charities:
-        - id: 593330495
-          url: https://www.charitynavigator.org/?bay=search.summary&orgid=8804&utm_source=DataAPI&utm_content=6bc9f3c8
-          name: "Big Cat Rescue"
-          rating: 4
-          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
-        - id: 911726410
-          url: https://www.charitynavigator.org/?bay=search.summary&orgid=18675&utm_source=DataAPI&utm_content=6bc9f3c8
-          name: "Whatcom Community Foundation"
-          rating: 4
-          rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+          - id: 593330495
+            url: https://www.charitynavigator.org/?bay=search.summary&orgid=8804&utm_source=DataAPI&utm_content=6bc9f3c8
+            name: "Big Cat Rescue"
+            rating: 4
+            rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
+          - id: 911726410
+            url: https://www.charitynavigator.org/?bay=search.summary&orgid=18675&utm_source=DataAPI&utm_content=6bc9f3c8
+            name: "Whatcom Community Foundation"
+            rating: 4
+            rating_image: https://d20umu42aunjpx.cloudfront.net/_gfx_/icons/stars/4stars.png
